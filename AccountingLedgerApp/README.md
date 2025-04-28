@@ -75,7 +75,7 @@ All transactions are automatically saved to the **`transactions.csv`** file in y
 (Add screenshots of Home Screen, Ledger View, Reports Screen once available)
 
 ## ⚙️ Technologies Used
-☕ Java 17
+☕ Java 23
 
 📂 Java File I/O (BufferedReader, BufferedWriter)
 
