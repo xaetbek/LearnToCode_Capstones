@@ -90,20 +90,22 @@ All transactions are automatically saved to the **`transactions.csv`** file in y
 📟 Command-Line Interface (CLI)
 
 ## 🗂️ Project Structure (DRAFT)
-Capstone1-AccountingLedger/
+```plaintext
+AccountingLedgerApp/
 ├── src/
 │   └── main/
 │       └── java/
 │           └── com/
-│               └── com.pluralrsight/
+│               └── pluralsight/
 │                   ├── Main.java
 │                   ├── Ledger.java
 │                   ├── Transaction.java
 │                   ├── TransactionService.java
 │                   └── ReportService.java
 ├── resources/
-├── .gitignore
 ├── transactions.csv
+├── .gitignore
 ├── README.md
-├── pom.xml (if using Maven)
-└── LICENSE (optional)
+├── pom.xml
+└── LICENSE
+
