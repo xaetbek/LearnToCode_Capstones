@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 public class TransactionHandler {
     private static Scanner scanner = new Scanner(System.in);
+    private static final String fileName = "transactions.csv";
+
 
     public void run() {
         loadTransactions();
@@ -27,7 +29,7 @@ public class TransactionHandler {
             if (input.equalsIgnoreCase("D")) {
                 addDeposit();
             } else if (input.equalsIgnoreCase("P")) {
-                System.out.println("Make payment function coming soon");
+                makePayment();
             } else if (input.equalsIgnoreCase("L")) {
                 System.out.println("Ledger coming soon ");
             }else if (input.equalsIgnoreCase("X")) {
@@ -75,52 +77,90 @@ public class TransactionHandler {
         return transactions;
     }
 
-    // Save a single transaction to the CSV file
-    public static void writeTransactionToCsv(String vendor, String description, double amount) {
-        LocalDate transactionDate = LocalDate.now();
-        LocalTime transactionTime = LocalTime.now();
-        try {
-            FileWriter fileWriter = new FileWriter("transactions.csv" , true);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
-            File file = new File("transactions.csv");
-            // Check if the file is empty
-            if (!file.exists() || file.length() == 0) {
-                // Write the header if the file is empty
-                writer.write("Date|Time|Description|Vendor|Amount\n");
-            }
-            // Write the transaction details
-            String formattedDate = transactionDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            String formattedTime = transactionTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-            writer.append(formattedDate).append("|").append(formattedTime).append("|").append(description).append("|").append(vendor).append("|").append(String.valueOf(amount)).append("\n");
-            writer.close();
 
-            if (amount > 0) {
-                System.out.println("Deposit: $" + amount + " | Vendor: " + vendor + " | Description: " + "'" + description + "'" + " | Status: Added\n");
-            } else {
-                System.out.println("Payment: $" + Math.abs(amount) + " | Vendor: " + vendor + " | Description: "  + "'" + description + "'" + " | Status: Payment Made\n");
+    // Add transactions to CSV file
+    public static void addDeposit() {
+        Scanner scanner = new Scanner(System.in);
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now().withNano(0);  // removes nanoseconds for cleaner format
+
+        String formattedDate = date.toString(); // YYYY-MM-DD
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        System.out.println("\n===Add Deposit===");
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Enter vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Enter amount (positive number): ");
+        String amountStr = scanner.nextLine();
+
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                System.out.println("Amount must be positive.");
+                return;
             }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format.");
+            return;
+        }
+
+        String transaction = String.format("%s|%s|%s|%s|%.2f", formattedDate, formattedTime, description, vendor, amount);
+
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(transaction + "\n");
+            System.out.println("Deposit added successfully.\n");
         } catch (IOException e) {
-            System.out.println("Error writing transactions to CSV: " + e.getMessage());
+            System.out.println("Failed to write to file: \n" + e.getMessage());
         }
     }
 
-    public static void addDeposit() {
-        System.out.println("Enter the amount to deposit:");
-        System.out.print("> ");
-        double amount = scanner.nextDouble();
-        if (amount <= 0) {
-            System.out.println("Deposit amount must be greater than zero.");
-            return;
-        }
-        scanner.nextLine();
-        System.out.println("Enter a description for the deposit:");
-        System.out.print("> ");
+    public static void makePayment() {
+        Scanner scanner = new Scanner(System.in);
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now().withNano(0);
+
+        String formattedDate = date.toString(); // e.g., 2025-04-29
+        String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        System.out.println("\n===Add Payment===");
+        System.out.print("Enter description: ");
         String description = scanner.nextLine();
-        System.out.println("Enter the vendor name for the deposit:");
-        System.out.print("> ");
+
+        System.out.print("Enter vendor: ");
         String vendor = scanner.nextLine();
 
-        writeTransactionToCsv(vendor, description, amount);
+        System.out.print("Enter amount (positive number): ");
+        String amountStr = scanner.nextLine();
 
+        double amount;
+        try {
+            amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                System.out.println("Amount must be positive.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format.");
+            return;
+        }
+
+        // Store payment as negative
+        amount = -Math.abs(amount);
+
+        String transaction = String.format("%s|%s|%s|%s|%.2f", formattedDate, formattedTime, description, vendor, amount);
+
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            writer.write(transaction + "\n");
+            System.out.println("Payment recorded successfully.\n");
+        } catch (IOException e) {
+            System.out.println("Failed to write to file: \n" + e.getMessage());
+        }
     }
 }
