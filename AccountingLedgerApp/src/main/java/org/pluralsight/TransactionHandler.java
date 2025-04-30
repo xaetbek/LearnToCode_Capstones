@@ -12,13 +12,12 @@ public class TransactionHandler {
     private static Scanner scanner = new Scanner(System.in);
     private static final String fileName = "transactions.csv";
 
-
     public void run() {
         loadTransactions();
 
         boolean running = true;
         while (running) {
-            System.out.print("=== Home Screen ===" +
+            System.out.print("--- Home Screen ---" +
                     "\nD) Add Deposit" +
                     "\nP) Make Payment (Debit)" +
                     "\nL) Ledger" +
@@ -31,7 +30,7 @@ public class TransactionHandler {
             } else if (input.equalsIgnoreCase("P")) {
                 makePayment();
             } else if (input.equalsIgnoreCase("L")) {
-                System.out.println("Ledger coming soon ");
+                Ledger.showLedgerMenu();
             }else if (input.equalsIgnoreCase("X")) {
                 System.out.println("Goodbye!");
                 return;
@@ -54,6 +53,11 @@ public class TransactionHandler {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
+                // Skip header if detected
+                if (line.toLowerCase().startsWith("date|time|description|vendor|amount")) {
+                    continue;
+                }
+
                 String[] parts = line.split("\\|");
                 if (parts.length == 5) {
                     try {
@@ -88,7 +92,7 @@ public class TransactionHandler {
         String formattedDate = date.toString(); // YYYY-MM-DD
         String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-        System.out.println("\n===Add Deposit===");
+        System.out.println("\n--- Add Deposit ---");
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
 
@@ -129,7 +133,7 @@ public class TransactionHandler {
         String formattedDate = date.toString(); // e.g., 2025-04-29
         String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
-        System.out.println("\n===Add Payment===");
+        System.out.println("\n--- Make Payment ---");
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
 
@@ -163,4 +167,6 @@ public class TransactionHandler {
             System.out.println("Failed to write to file: \n" + e.getMessage());
         }
     }
+
+
 }
