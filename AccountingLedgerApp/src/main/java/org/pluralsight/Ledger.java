@@ -6,6 +6,7 @@ public class Ledger {
 
     public static void showLedgerMenu() {
         Scanner scanner = new Scanner(System.in);
+        List<String> transactions = TransactionHandler.loadTransactionStrings();
         boolean inLedger = true;
 
         while (inLedger) {
@@ -21,11 +22,11 @@ public class Ledger {
             if (choice.equalsIgnoreCase("A")) {
                 displayLedger("ALL");
             } else if (choice.equalsIgnoreCase("D")) {
-                displayLedger("DEPOSIT");
+                displayLedger("DEPOSITS");
             } else if (choice.equalsIgnoreCase("P")) {
-                displayLedger("PAYMENT");
+                displayLedger("PAYMENTS");
             } else if (choice.equalsIgnoreCase("R")) {
-                //showReportMenu(); // you can move this later too
+                Reports.showReportMenu(transactions);
             } else if (choice.equalsIgnoreCase("H")) {
                 inLedger = false;
             } else {
@@ -74,4 +75,5 @@ public class Ledger {
             System.out.println(entry);
         }
     }
+
 }

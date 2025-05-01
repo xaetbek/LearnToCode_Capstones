@@ -13,7 +13,7 @@ public class TransactionHandler {
     private static final String fileName = "transactions.csv";
 
     public void run() {
-        loadTransactions();
+        loadTransactionStrings();
 
         boolean running = true;
         while (running) {
@@ -40,43 +40,26 @@ public class TransactionHandler {
         }
     }
 
-
-    public static List<Transaction> loadTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-        File file = new File("transactions.csv");
+    // Convert transactions list to String
+    public static List<String> loadTransactionStrings() {
+        List<String> transactions = new ArrayList<>();
+        File file = new File(fileName);
 
         if (!file.exists()) {
-            // If the file doesn't exist, return an empty list instead of failing
-            return transactions;
+            return transactions;  // Return empty list if file doesn't exist
         }
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                // Skip header if detected
+            while ((line = reader.readLine()) != null) {
+                // Skip header line
                 if (line.toLowerCase().startsWith("date|time|description|vendor|amount")) {
                     continue;
                 }
-
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    try {
-                        LocalDate date = LocalDate.parse(parts[0]);
-                        LocalTime time = LocalTime.parse(parts[1]);
-                        String description = parts[2];
-                        String vendor = parts[3];
-                        double amount = Double.parseDouble(parts[4]);
-
-                        Transaction t = new Transaction(date, time, description, vendor, amount);
-                        transactions.add(t);
-                    } catch (Exception e) {
-                        // Skip malformed line
-                        System.out.println("Skipping bad line: " + line);
-                    }
-                }
+                transactions.add(line);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error reading transactions.csv", e);
+            System.out.println("Error reading transactions: " + e.getMessage());
         }
         return transactions;
     }
