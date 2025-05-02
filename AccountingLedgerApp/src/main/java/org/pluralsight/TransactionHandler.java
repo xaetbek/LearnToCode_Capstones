@@ -29,12 +29,16 @@ public class TransactionHandler {
         boolean running = true;
         while (running) {
             // Display home screen options
-            System.out.print("--- Home Screen ---" +
-                    "\nD) Add Deposit" +
-                    "\nP) Make Payment (Debit)" +
-                    "\nL) Ledger" +
-                    "\nX) Exit" +
-                    "\nChoose an option: ");
+            System.out.println("\n╔══════════════════════════════╗");
+            System.out.println("║      Ledger Application      ║");
+            System.out.println("║          Home Screen         ║");
+            System.out.println("╠══════════════════════════════╣");
+            System.out.println("║ D) Add Deposit               ║");
+            System.out.println("║ P) Make Payment (Debit)      ║");
+            System.out.println("║ L) Ledger                    ║");
+            System.out.println("║ X) Exit                      ║");
+            System.out.println("╚══════════════════════════════╝");
+            System.out.print("➤ Choose an option: ");
             String input = scanner.nextLine();
 
             // Process user selection
