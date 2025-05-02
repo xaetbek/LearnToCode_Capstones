@@ -16,13 +16,16 @@ public class Ledger {
 
         // Main menu loop
         while (inLedger) {
-            System.out.println("\n--- Ledger Menu ---");
-            System.out.println("A) All");
-            System.out.println("D) Deposits");
-            System.out.println("P) Payments");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
-            System.out.print("Choose an option: ");
+            System.out.println("\n╔════════════════════╗");
+            System.out.println("║     LEDGER MENU    ║");
+            System.out.println("╠════════════════════╣");
+            System.out.println("║ A) All             ║");
+            System.out.println("║ D) Deposits        ║");
+            System.out.println("║ P) Payments        ║");
+            System.out.println("║ R) Reports         ║");
+            System.out.println("║ H) Home            ║");
+            System.out.println("╚════════════════════╝");
+            System.out.print("➤ Choose an option: ");
             String choice = scanner.nextLine().trim();
 
             // Process user selection
