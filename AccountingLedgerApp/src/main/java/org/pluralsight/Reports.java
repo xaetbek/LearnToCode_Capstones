@@ -50,8 +50,11 @@ public class Reports {
 
     public static void generateMonthToDateReport(List<String> transactions) {
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
-        System.out.println("\n--- Month to Date Report ---");
-        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                      Month to Date Report                 ");
+        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
+        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
+        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
 
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
@@ -66,8 +69,11 @@ public class Reports {
         LocalDate firstOfPreviousMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate lastOfPreviousMonth = firstOfPreviousMonth.withDayOfMonth(firstOfPreviousMonth.lengthOfMonth());
 
-        System.out.println("\n--- Previous Month Report ---");
-        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                  Previous Month Report.                   ");
+        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
+        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
+        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -81,8 +87,11 @@ public class Reports {
     public static void generateYearToDateReport(List<String> transactions) {
         LocalDate startOfYear = LocalDate.now().withDayOfYear(1);
 
-        System.out.println("\n--- Year to Date Report ---");
-        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                    Year to Date Report                  ");
+        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
+        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
+        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -96,8 +105,11 @@ public class Reports {
         LocalDate startOfLastYear = LocalDate.now().minusYears(1).withDayOfYear(1);
         LocalDate endOfLastYear = startOfLastYear.withDayOfYear(startOfLastYear.lengthOfYear());
 
-        System.out.println("\n--- Previous Year Report ---");
-        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                    Previous Year Report                   ");
+        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
+        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
+        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -109,8 +121,11 @@ public class Reports {
     }
 
     public static void searchByVendor(List<String> transactions, String vendor) {
-        System.out.println("\n--- Search by Vendor: " + vendor + " ---");
-        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                  Search by Vendor: " + vendor + "         ");
+        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
+        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
+        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
 
         // Convert search term to lowercase once for efficiency
         String searchTerm = vendor.trim().toLowerCase();
