@@ -50,7 +50,7 @@ public class Ledger {
      * @param filterType The type of transactions to show (ALL, DEPOSITS, PAYMENTS)
      */
     public static void displayLedger(String filterType) {
-        List<String> lines = new ArrayList<>();
+        List<String[]> ledgerTransactions = new ArrayList<>();
 
         // Read transactions from CSV file
         try (BufferedReader reader = new BufferedReader(new FileReader("transactions.csv"))) {
@@ -77,7 +77,7 @@ public class Ledger {
                 };
 
                 if (show) {
-                    lines.add(line);
+                    ledgerTransactions.add(parts);
                 }
             }
         } catch (IOException e) {
@@ -86,16 +86,31 @@ public class Ledger {
         }
 
         // Reverse to show most recent transactions first
-        Collections.reverse(lines);
+        Collections.reverse(ledgerTransactions);
 
         // Print the filtered transactions
-        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
-        System.out.println("                     LEDGER: " + filterType + "            ");
-        System.out.println("┣━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┫");
-        System.out.println("┃   DATE  ┃  TIME  ┃  DESCRIPTION  ┃   VENDOR   ┃  AMOUNT ┃");
-        System.out.println("┗━━━━━━━━━┻━━━━━━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━━┻━━━━━━━━━┛");
-        for (String entry : lines) {
-            System.out.println(entry);
+        System.out.println("┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓");
+        System.out.println("                          LEDGER: " + filterType + "             "     );
+        System.out.println("┣━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━┫");
+        System.out.println("┃    DATE    ┃   TIME   ┃   DESCRIPTION   ┃     VENDOR   ┃   AMOUNT  ┃");
+        System.out.println("┗━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━━┛");
+
+        // Print transactions with perfect alignment
+        for (String[] parts : ledgerTransactions) {
+            System.out.printf(
+                    "┃ %-10s ┃ %-8s ┃ %-15s ┃ %-12s ┃ %9s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]
+            );
         }
+
+        printLedgerFooter();
+    }
+
+    /**
+     * Prints consistent footer matching Reports class style
+     */
+    private static void printLedgerFooter() {
+        System.out.println("┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛");
+        System.out.println(); // Extra spacing
     }
 }

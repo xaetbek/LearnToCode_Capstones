@@ -1,6 +1,8 @@
 package org.pluralsight;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +17,7 @@ public class Reports {
             "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
                     "                     %-35s       \n" +  // Title will be centered here
                     "┣━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┫\n" +
-                    "┃    DATE    ┃   TIME   ┃   DESCRIPTION   ┃     VENDOR   ┃  AMOUNT  ┃\n" +
+                    "┃    DATE    ┃   TIME   ┃   DESCRIPTION   ┃    VENDOR    ┃  AMOUNT  ┃\n" +
                     "┗━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━┛";
 
     /**
@@ -78,13 +80,24 @@ public class Reports {
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
         System.out.printf(REPORT_HEADER + "\n", "MONTH TO DATE REPORT");
 
+        // Create temporary list to reverse order
+        List<String> tempList = new ArrayList<>();
+
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
             if (date.isAfter(startOfMonth.minusDays(1))) {
-                System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
-                        parts[0], parts[1], parts[2], parts[3], parts[4]);
+                tempList.add(transaction);
             }
+        }
+
+        // Reverse to show newest first
+        Collections.reverse(tempList);
+
+        for (String transaction : tempList) {
+            String[] parts = transaction.split("\\|");
+            System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]);
         }
         printReportFooter();
     }
@@ -97,15 +110,24 @@ public class Reports {
         LocalDate firstOfPreviousMonth = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate lastOfPreviousMonth = firstOfPreviousMonth.withDayOfMonth(firstOfPreviousMonth.lengthOfMonth());
 
-        System.out.printf(REPORT_HEADER + "\n", "PREVIOUS MONTH REPORT");
+        System.out.printf(REPORT_HEADER + "\n", "  PREVIOUS MONTH REPORT");
+
+        List<String> tempList = new ArrayList<>();
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
             if ((date.isEqual(firstOfPreviousMonth) || date.isAfter(firstOfPreviousMonth)) &&
                     date.isBefore(lastOfPreviousMonth.plusDays(1))) {
-                System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
-                        parts[0], parts[1], parts[2], parts[3], parts[4]);
+                tempList.add(transaction);
             }
+        }
+
+        Collections.reverse(tempList);
+
+        for (String transaction : tempList) {
+            String[] parts = transaction.split("\\|");
+            System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]);
         }
         printReportFooter();
     }
@@ -116,15 +138,25 @@ public class Reports {
      */
     public static void generateYearToDateReport(List<String> transactions) {
         LocalDate startOfYear = LocalDate.now().withDayOfYear(1);
-        System.out.printf(REPORT_HEADER + "\n", "YEAR TO DATE REPORT");
+        System.out.printf(REPORT_HEADER + "\n", "   YEAR TO DATE REPORT");
+
+        // Create a temporary list before reverse
+        List<String> tempList = new ArrayList<>();
 
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
             if (date.isAfter(startOfYear.minusDays(1))) {
-                System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
-                        parts[0], parts[1], parts[2], parts[3], parts[4]);
+                tempList.add(transaction);
             }
+        }
+
+        Collections.reverse(tempList);
+
+        for (String transaction : tempList) {
+            String[] parts = transaction.split("\\|");
+            System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]);
         }
         printReportFooter();
     }
@@ -137,15 +169,26 @@ public class Reports {
         LocalDate startOfLastYear = LocalDate.now().minusYears(1).withDayOfYear(1);
         LocalDate endOfLastYear = startOfLastYear.withDayOfYear(startOfLastYear.lengthOfYear());
 
-        System.out.printf(REPORT_HEADER + "\n", "PREVIOUS YEAR REPORT");
+        System.out.printf(REPORT_HEADER + "\n", "  PREVIOUS YEAR REPORT");
+
+        // Create a temporary list
+        List<String> tempList = new ArrayList<>();
+
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
             if ((date.isEqual(startOfLastYear) || date.isAfter(startOfLastYear)) &&
                     date.isBefore(endOfLastYear.plusDays(1))) {
-                System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
-                        parts[0], parts[1], parts[2], parts[3], parts[4]);
+                tempList.add(transaction);
             }
+        }
+
+        Collections.reverse(tempList);
+
+        for (String transaction : tempList) {
+            String[] parts = transaction.split("\\|");
+            System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]);
         }
         printReportFooter();
     }
@@ -161,16 +204,27 @@ public class Reports {
         String searchTerm = vendor.trim().toLowerCase();
         boolean found = false;
 
+        // temporary list before reverse
+        List<String> tempList = new ArrayList<>();
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             if (parts.length >= 4) {
                 String transactionVendor = parts[3].trim().toLowerCase();
                 if (transactionVendor.contains(searchTerm)) {
-                    System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
-                            parts[0], parts[1], parts[2], parts[3], parts[4]);
+                    tempList.add(transaction);
                     found = true;
                 }
             }
+        }
+
+        Collections.reverse(tempList);
+
+        for (String transaction : tempList) {
+            String[] parts = transaction.split("\\|");
+            System.out.printf("┃ %-9s ┃ %-6s ┃ %-13s ┃ %-10s ┃ %8s ┃\n",
+                    parts[0], parts[1], parts[2], parts[3], parts[4]);
+            found = true;
+
         }
 
         if (!found) {
