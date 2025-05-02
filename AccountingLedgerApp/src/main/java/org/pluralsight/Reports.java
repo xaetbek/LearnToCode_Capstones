@@ -11,15 +11,6 @@ import java.util.Scanner;
  * Features beautiful box-drawing UI elements for enhanced visual presentation
  */
 public class Reports {
-
-    // Common header format for all reports
-    private static final String REPORT_HEADER =
-            "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
-                    "                     %-35s       \n" +  // Title will be centered here
-                    "┣━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┫\n" +
-                    "┃    DATE    ┃   TIME   ┃   DESCRIPTION   ┃    VENDOR    ┃  AMOUNT  ┃\n" +
-                    "┗━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━┛";
-
     /**
      * Displays the interactive reports menu and handles user selections
      */
@@ -232,6 +223,15 @@ public class Reports {
         }
         printReportFooter();
     }
+
+    // Common header format for all reports
+    private static final String REPORT_HEADER =
+            "┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓\n" +
+                    "                     %-35s       \n" +  // Title will be centered here
+                    "┣━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┫\n" +
+                    "┃    DATE    ┃   TIME   ┃   DESCRIPTION   ┃    VENDOR    ┃  AMOUNT  ┃\n" +
+                    "┗━━━━━━━━━━━━┻━━━━━━━━━━┻━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━┻━━━━━━━━━━┛";
+
 
     /**
      * Prints consistent footer for all reports

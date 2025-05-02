@@ -59,7 +59,7 @@ public class TransactionHandler {
 
     /**
      * Loads transactions from CSV file into a List of Strings
-     * @return List of transaction strings in pipe-delimited format
+     * @return List of transaction strings
      */
     public static List<String> loadTransactionStrings() {
         List<String> transactions = new ArrayList<>();
