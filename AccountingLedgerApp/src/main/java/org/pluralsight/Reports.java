@@ -1,7 +1,6 @@
 package org.pluralsight;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,7 +36,7 @@ public class Reports {
                 case "5":
                     System.out.print("Enter vendor name: ");
                     String vendor = scanner.nextLine().trim();
-                    Reports.searchByVendor(transactions, vendor);
+                    searchByVendor(transactions, vendor);
                     break;
                 case "0":
                     inReports = false;  // Exit report menu
@@ -52,6 +51,7 @@ public class Reports {
     public static void generateMonthToDateReport(List<String> transactions) {
         LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
         System.out.println("\n--- Month to Date Report ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
 
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
@@ -67,6 +67,7 @@ public class Reports {
         LocalDate lastOfPreviousMonth = firstOfPreviousMonth.withDayOfMonth(firstOfPreviousMonth.lengthOfMonth());
 
         System.out.println("\n--- Previous Month Report ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -81,6 +82,7 @@ public class Reports {
         LocalDate startOfYear = LocalDate.now().withDayOfYear(1);
 
         System.out.println("\n--- Year to Date Report ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -95,6 +97,7 @@ public class Reports {
         LocalDate endOfLastYear = startOfLastYear.withDayOfYear(startOfLastYear.lengthOfYear());
 
         System.out.println("\n--- Previous Year Report ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             LocalDate date = LocalDate.parse(parts[0]);
@@ -107,11 +110,28 @@ public class Reports {
 
     public static void searchByVendor(List<String> transactions, String vendor) {
         System.out.println("\n--- Search by Vendor: " + vendor + " ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
+
+        // Convert search term to lowercase once for efficiency
+        String searchTerm = vendor.trim().toLowerCase();
+        boolean found = false;
+
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
-            if (parts[3].equalsIgnoreCase(vendor)) {
-                System.out.println(transaction);
+            if (parts.length >= 4) {  // Safety check
+                // Get vendor name (trimmed and lowercase for comparison)
+                String transactionVendor = parts[3].trim().toLowerCase();
+
+                // Check if vendor contains the search term (partial match)
+                if (transactionVendor.contains(searchTerm)) {
+                    System.out.println(transaction);
+                    found = true;
+                }
             }
+        }
+
+        if (!found) {
+            System.out.println("No transactions found for vendor containing: " + vendor);
         }
     }
 }

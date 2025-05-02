@@ -53,7 +53,7 @@ public class TransactionHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 // Skip header line
-                if (line.toLowerCase().startsWith("date|time|description|vendor|amount")) {
+                if (line.toLowerCase().startsWith("---date---|--time--|--description--|---vendor---|--amount--")) {
                     continue;
                 }
                 transactions.add(line);
@@ -65,39 +65,46 @@ public class TransactionHandler {
     }
 
 
-    // Add transactions to CSV file
     public static void addDeposit() {
         Scanner scanner = new Scanner(System.in);
 
         LocalDate date = LocalDate.now();
-        LocalTime time = LocalTime.now().withNano(0);  // removes nanoseconds for cleaner format
+        LocalTime time = LocalTime.now().withNano(0);
 
-        String formattedDate = date.toString(); // YYYY-MM-DD
+        String formattedDate = date.toString();
         String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
         System.out.println("\n--- Add Deposit ---");
-        System.out.print("Enter description: ");
+
+        // Get and format description
+        System.out.print("Enter description (max 15 chars): ");
         String description = scanner.nextLine();
+        description = formatDescription(description);  // Format to exactly 15 chars
 
         System.out.print("Enter vendor: ");
         String vendor = scanner.nextLine();
+        vendor = formatVendor(vendor);
 
-        System.out.print("Enter amount (positive number): ");
-        String amountStr = scanner.nextLine();
-
+        // Amount validation with loop
         double amount;
-        try {
-            amount = Double.parseDouble(amountStr);
-            if (amount <= 0) {
-                System.out.println("Amount must be positive.");
-                return;
+        while (true) {
+            System.out.print("Enter amount (positive number): ");
+            String amountStr = scanner.nextLine();
+
+            try {
+                amount = Double.parseDouble(amountStr);
+                if (amount <= 0) {
+                    System.out.println("Amount must be positive. Try again.");
+                    continue;  // Restart the loop
+                }
+                break;  // Exit loop if valid
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format. Please enter a valid number (e.g. 25.50).");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format.");
-            return;
         }
 
-        String transaction = String.format("%s|%s|%s|%s|%.2f", formattedDate, formattedTime, description, vendor, amount);
+        String transaction = String.format("%s|%s|%s|%s|%.2f",
+                formattedDate, formattedTime, description, vendor, amount);
 
         try (FileWriter writer = new FileWriter(fileName, true)) {
             writer.write(transaction + "\n");
@@ -119,23 +126,28 @@ public class TransactionHandler {
         System.out.println("\n--- Make Payment ---");
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
+        description = formatDescription(description);
 
         System.out.print("Enter vendor: ");
         String vendor = scanner.nextLine();
+        vendor = formatVendor(vendor);
 
-        System.out.print("Enter amount (positive number): ");
-        String amountStr = scanner.nextLine();
-
+        // Amount validation with loop
         double amount;
-        try {
-            amount = Double.parseDouble(amountStr);
-            if (amount <= 0) {
-                System.out.println("Amount must be positive.");
-                return;
+        while (true) {
+            System.out.print("Enter amount (positive number): ");
+            String amountStr = scanner.nextLine();
+
+            try {
+                amount = Double.parseDouble(amountStr);
+                if (amount <= 0) {
+                    System.out.println("Amount must be positive. Try again.");
+                    continue;  // Restart the loop
+                }
+                break;  // Exit loop if valid
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format. Please enter a valid number (e.g. 25.50).");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format.");
-            return;
         }
 
         // Store payment as negative
@@ -151,5 +163,22 @@ public class TransactionHandler {
         }
     }
 
-
+    // Helper method to format description
+    private static String formatDescription(String input) {
+        // Trim if longer than 15 characters
+        if (input.length() > 15) {
+            return input.substring(0, 15);
+        }
+        // Pad with spaces if shorter than 15 characters
+        return String.format("%-15s", input);
+    }
+    // Helper method to format vendor
+    private static String formatVendor(String input) {
+        // Trim if longer than 10 characters
+        if (input.length() > 12) {
+            return input.substring(0, 12);
+        }
+        // Pad with spaces if shorter than 12 characters
+        return String.format("%-12s", input);
+    }
 }

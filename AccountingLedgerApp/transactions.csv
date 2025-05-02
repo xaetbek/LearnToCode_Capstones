@@ -1,11 +1,19 @@
-Date|Time|Description|Vendor|Amount
-2025-04-29|15:58:09|dfgdsgag.|sasdggd|343.22
-2025-04-29|15:59:21|sdfdga|weawg|2323.23
-2025-04-29|16:46:17|sdfsdf|sdfsdf|123.40
-2025-04-29|16:52:54|sdg|PSPSPS|-1111111.00
-2025-04-30|10:48:07|somomsomomosm|nnnnbbnnbnbnbnb|1223.00
-2024-04-30|10:48:46|werwerwerwer|tttttttttt|-454534.00
-2025-04-30|11:37:14|poiuytrtyuiopoiuyt|oiuyuiopoiuy|1234.00
-2025-04-30|11:37:40|nbnbnbnnbnb|mzmzmzmzmmz|-999999.00
-2025-05-01|09:33:52|Huge Carton Box|Amazon|212.21
-2025-05-01|09:34:35|Old Navy Package|Gap|-343.34
+---date---|--time--|--description--|---vendor---|--amount--
+2024-11-15|09:30:00|Salary         |Acme Corp   |3000.00
+2024-12-05|14:15:00|Holiday Shop   |BuyMore     |-150.75
+2025-01-10|11:45:00|Bonus          |WorkPlace   |500.00
+2025-02-20|16:30:00|Car Insurance  |AutoShield  |-120.00
+2025-03-15|10:00:00|Freelance Pay  |DesignHub   |750.50
+2025-04-01|08:45:00|April Rent     |RentCo      |-1100.00
+2025-04-05|12:30:00|Groceries      |MarketTen   |-85.25
+2025-04-10|09:15:00|Phone Bill     |ConnectTel  |-65.99
+2025-04-15|14:20:00|Consulting     |TechSol     |600.00
+2025-04-20|11:00:00|Dinner Out     |FoodSpot    |-45.50
+2025-04-25|13:45:00|Gas Fill-Up    |QuickFuel   |-38.75
+2025-04-30|10:30:00|May Rent       |RentCo      |-1100.00
+2025-05-01|07:30:00|May Salary     |Acme Corp   |3000.00
+2025-05-01|11:36:17|Milk Choco     |Bimbo       |122.00
+2025-05-01|11:39:02|Milky Way      |Snickers    |123.00
+2025-05-01|11:39:55|Peanut Butter  |Cupcake     |9.99
+2025-05-01|11:42:41|Coconut Chocola|Bounty      |3.99
+2025-05-01|11:51:51|Playstation 5  |Sony        |-599.99

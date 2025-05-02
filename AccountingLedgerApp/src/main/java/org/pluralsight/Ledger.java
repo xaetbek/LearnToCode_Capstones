@@ -43,7 +43,7 @@ public class Ledger {
             while ((line = reader.readLine()) != null) {
 
                 // skip the header
-                if (line.toLowerCase().startsWith("date|time|description|vendor|amount")) {
+                if (line.toLowerCase().startsWith("---date---|--time--|--description--|---vendor---|--amount--")) {
                     continue;
                 }
 
@@ -71,6 +71,7 @@ public class Ledger {
         Collections.reverse(lines);
 
         System.out.println("\n--- Ledger: " + filterType + " ---");
+        System.out.println("---date---|--time--|--description--|---vendor---|--amount--");
         for (String entry : lines) {
             System.out.println(entry);
         }
