@@ -27,18 +27,9 @@ This project showcases my **Java development fundamentals** including:
     - Year-to-Date
     - Previous Year
     - Search by Vendor
+- All transactions are automatically saved to the **`transactions.csv`** file in the project directory.
+
 ---
-
-  
-## 🖥️ Usage
-Launch the application through the Command Line Interface (CLI) or your IDE terminal.
-Use the main menu options to:
-
-- ➕ Add new deposits
-- ➖ Record outgoing payments
-- 📄 View and filter the transaction ledger
-- 📊 Generate a variety of detailed reports
-- All transactions are automatically saved to the **`transactions.csv`** file in your project directory.
 
 ## 📸 Screenshots
 
