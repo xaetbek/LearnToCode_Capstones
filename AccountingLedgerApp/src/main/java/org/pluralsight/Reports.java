@@ -16,9 +16,9 @@ public class Reports {
      */
     public static void showReportMenu(List<String> transactions) {
         Scanner scanner = new Scanner(System.in);
-        boolean inReports = true;
+        boolean reports = true;
 
-        while (inReports) {
+        while (reports) {
             // Display menu options with consistent formatting
             System.out.println("\n╔══════════════════════════════╗");
             System.out.println("║         REPORTS MENU         ║");
@@ -54,7 +54,7 @@ public class Reports {
                     searchByVendor(transactions, vendor);
                     break;
                 case "0":
-                    inReports = false;  // Exit report menu
+                    reports = false;  // Exit report menu
                     break;
                 default:
                     System.out.println("⚠️  Invalid option. Please try again.");
@@ -197,6 +197,7 @@ public class Reports {
 
         // temporary list before reverse
         List<String> tempList = new ArrayList<>();
+
         for (String transaction : transactions) {
             String[] parts = transaction.split("\\|");
             if (parts.length >= 4) {
