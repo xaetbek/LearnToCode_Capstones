@@ -37,5 +37,15 @@ Coming soon: Include screenshots of each screen (Home, Add Sandwich, Checkout, e
 - Maintain source control with GitHub
 - Track progress using GitHub Projects and Issues
 
+## Credits
+- Instructor: Remsey M.
+- Student: Khayotbek Azimov
+- Class: Learn To Code Academy - Java Focus
+- Learning Group: LG1
+- Learning Class: LC1 Code-Blooded
+- Capstone: No.2
+- Date: May 30th, 2025
+- Program: YearUpUnited
+
 ## 📄 License
 This project is licensed under the MIT License.
