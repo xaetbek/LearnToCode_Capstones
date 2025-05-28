@@ -15,13 +15,6 @@ public class Sandwich implements Product {
     private final boolean toasted;  // Toasting option
     private final List<Topping> toppings;  // List of selected toppings
 
-    public Sandwich(String size, String bread, boolean toasted) {
-        this.size = size;
-        this.bread = bread;
-        this.toasted = toasted;
-        this.toppings = new ArrayList<>();
-    }
-
     public Sandwich(String size, String bread, boolean toasted, List<Topping> toppings) {
         this.size = size;
         this.bread = bread;
@@ -104,7 +97,7 @@ public class Sandwich implements Product {
 
         // Add meat toppings
         while (true) {
-            System.out.print("Add meat (steak, turkey, pastrami, roast beef, chicken, corned beef) or press enter to skip: ");
+            System.out.print("Add meat (steak, ham, salami, roast beef, chicken, bacon) or press enter to skip: ");
             String meat = scanner.nextLine().trim().toLowerCase();
             if (meat.isEmpty()) break;
             System.out.print("Add extra? (yes/no): ");
