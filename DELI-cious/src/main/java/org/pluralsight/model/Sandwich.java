@@ -104,7 +104,7 @@ public class Sandwich implements Product {
 
         // Add meat toppings
         while (true) {
-            System.out.print("Add meat (steak, ham, salami, roast beef, chicken, bacon) or press enter to skip: ");
+            System.out.print("Add meat (steak, turkey, pastrami, roast beef, chicken, corned beef) or press enter to skip: ");
             String meat = scanner.nextLine().trim().toLowerCase();
             if (meat.isEmpty()) break;
             System.out.print("Add extra? (yes/no): ");
