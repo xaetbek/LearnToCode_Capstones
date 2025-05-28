@@ -1,143 +1,114 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.service.Product;
-import org.pluralsight.model.toppings.Topping;
+import org.pluralsight.model.enums.*;
+import org.pluralsight.model.toppings.*;
+import org.pluralsight.service.PriceCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 /**
- * Represents a customizable sandwich that a customer can order.
- * Implements the Product interface to support polymorphic treatment in orders.
+ * Represents a customizable sandwich
  */
-public class Sandwich implements Product {
-    private final String size;      // 4", 8", or 12"
-    private final String bread;     // Bread type: white, wheat, rye, wrap
-    private final boolean toasted;  // Toasting option
-    private final List<Topping> toppings;  // List of selected toppings
+public class Sandwich {
+    private SandwichSize size;
+    private BreadType breadType;
+    private List<Meat> meats;
+    private List<Cheese> cheeses;
+    private List<RegularTopping> regularToppings;
+    private List<Sauce> sauces;
+    private List<Side> sides;
+    private boolean isToasted;
 
-    public Sandwich(String size, String bread, boolean toasted, List<Topping> toppings) {
+    public Sandwich(SandwichSize size, BreadType breadType) {
         this.size = size;
-        this.bread = bread;
-        this.toasted = toasted;
-        this.toppings = toppings;
+        this.breadType = breadType;
+        this.meats = new ArrayList<>();
+        this.cheeses = new ArrayList<>();
+        this.regularToppings = new ArrayList<>();
+        this.sauces = new ArrayList<>();
+        this.sides = new ArrayList<>();
+        this.isToasted = false;
     }
 
     /**
-     * Adds a list of toppings to the sandwich.
+     * Add a meat topping to the sandwich
+     * @param meatType The type of meat to add
+     * @param isExtra Whether this is an extra portion
      */
-    public void addToppings(List<Topping> toppingList) {
-        toppings.addAll(toppingList);
+    public void addMeat(MeatType meatType, boolean isExtra) {
+        meats.add(new Meat(meatType, isExtra));
     }
 
     /**
-     * Gets the base price of the sandwich based on its size.
+     * Add a cheese topping to the sandwich
+     * @param cheeseType The type of cheese to add
+     * @param isExtra Whether this is an extra portion
      */
-    private double getBasePrice() {
-        return switch (size) {
-            case "4\"" -> 5.50;
-            case "8\"" -> 7.00;
-            case "12\"" -> 8.50;
-            default -> 0.0;
-        };
+    public void addCheese(CheeseType cheeseType, boolean isExtra) {
+        cheeses.add(new Cheese(cheeseType, isExtra));
     }
 
     /**
-     * Calculates total sandwich price including toppings.
+     * Add a regular topping to the sandwich
+     * @param toppingType The type of regular topping to add
      */
-    @Override
-    public double getPrice() {
-        return getBasePrice() + toppings.stream()
-                .mapToDouble(t -> t.getPrice(size))
-                .sum();
-    }
-
-    @Override
-    public String getName() {
-        return size + " Sandwich";
+    public void addRegularTopping(RegularToppingType toppingType) {
+        regularToppings.add(new RegularTopping(toppingType));
     }
 
     /**
-     * Provides a formatted string describing the sandwich details.
+     * Add a sauce to the sandwich
+     * @param sauceType The type of sauce to add
      */
-    @Override
-    public String getDetails() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(size).append(" sandwich on ").append(bread);
-        if (toasted) sb.append(" (toasted)");
-        sb.append("\n  Toppings: ")
-                .append(toppings.stream()
-                        .map(Topping::toString)
-                        .collect(Collectors.joining(", ")));
-        sb.append("\n  Price: $").append(String.format("%.2f", getPrice()));
-        return sb.toString();
+    public void addSauce(SauceType sauceType) {
+        sauces.add(new Sauce(sauceType));
     }
 
     /**
-     * Returns a copy of the topping list for read-only purposes.
+     * Add a side to the sandwich
+     * @param sideType The type of side to add
      */
-    public List<Topping> getToppings() {
-        return new ArrayList<>(toppings);
+    public void addSide(SideType sideType) {
+        sides.add(new Side(sideType));
     }
 
     /**
-     * Builds a Sandwich object through user input (interactive CLI).
-     * Uses advanced OOP concepts including encapsulation, generics, and streams.
+     * Set whether the sandwich should be toasted
+     * @param toasted True if the sandwich should be toasted
      */
-    public static Sandwich build() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("\n--- Build Your Sandwich ---");
+    public void setToasted(boolean toasted) {
+        this.isToasted = toasted;
+    }
 
-        System.out.print("Choose sandwich size (4\", 8\", 12\"): ");
-        String size = scanner.nextLine();
+    /**
+     * Calculate the total price of the sandwich
+     * @return The total price including base price and all toppings
+     */
+    public double calculatePrice() {
+        double total = PriceCalculator.getSandwichBasePrice(size);
 
-        System.out.print("Choose bread (white, wheat, rye, wrap): ");
-        String bread = scanner.nextLine();
-
-        List<Topping> toppings = new ArrayList<>();
-
-        // Add meat toppings
-        while (true) {
-            System.out.print("Add meat (steak, ham, salami, roast beef, chicken, bacon) or press enter to skip: ");
-            String meat = scanner.nextLine().trim().toLowerCase();
-            if (meat.isEmpty()) break;
-            System.out.print("Add extra? (yes/no): ");
-            boolean isExtra = scanner.nextLine().trim().equalsIgnoreCase("yes");
-            toppings.add(new Topping(meat, Topping.Category.MEAT, isExtra));
+        // Add meat prices
+        for (Meat meat : meats) {
+            total += meat.calculatePrice(size, meat.isExtra());
         }
 
-        // Add cheese toppings
-        while (true) {
-            System.out.print("Add cheese (american, provolone, cheddar, swiss) or press enter to skip: ");
-            String cheese = scanner.nextLine().trim().toLowerCase();
-            if (cheese.isEmpty()) break;
-            System.out.print("Add extra? (yes/no): ");
-            boolean isExtra = scanner.nextLine().trim().equalsIgnoreCase("yes");
-            toppings.add(new Topping(cheese, Topping.Category.CHEESE, isExtra));
+        // Add cheese prices
+        for (Cheese cheese : cheeses) {
+            total += cheese.calculatePrice(size, cheese.isExtra());
         }
 
-        // Add regular toppings
-        while (true) {
-            System.out.print("Add regular topping (lettuce, onions, tomatoes, etc.) or press enter to skip: ");
-            String regular = scanner.nextLine().trim().toLowerCase();
-            if (regular.isEmpty()) break;
-            toppings.add(new Topping(regular, Topping.Category.REGULAR, false));
-        }
-
-        // Add sauces
-        while (true) {
-            System.out.print("Add sauce (mayo, mustard, ranch, etc.) or press enter to skip: ");
-            String sauce = scanner.nextLine().trim().toLowerCase();
-            if (sauce.isEmpty()) break;
-            toppings.add(new Topping(sauce, Topping.Category.SAUCE, false));
-        }
-
-        // Toasting option
-        System.out.print("Would you like the sandwich toasted? (yes/no): ");
-        boolean toasted = scanner.nextLine().trim().equalsIgnoreCase("yes");
-
-        return new Sandwich(size, bread, toasted, toppings);
+        // Regular toppings, sauces, and sides are free
+        return total;
     }
+
+    // Getters
+    public SandwichSize getSize() { return size; }
+    public BreadType getBreadType() { return breadType; }
+    public List<Meat> getMeats() { return meats; }
+    public List<Cheese> getCheeses() { return cheeses; }
+    public List<RegularTopping> getRegularToppings() { return regularToppings; }
+    public List<Sauce> getSauces() { return sauces; }
+    public List<Side> getSides() { return sides; }
+    public boolean isToasted() { return isToasted; }
 }

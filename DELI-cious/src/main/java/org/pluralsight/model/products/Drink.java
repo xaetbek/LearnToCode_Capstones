@@ -1,43 +1,29 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.service.Product;
+import org.pluralsight.model.enums.DrinkSize;
+import org.pluralsight.service.PriceCalculator;
 
 /**
- * Represents a drink item in the order.
- * Implements the Product interface.
+ * Represents a drink product
  */
-public class Drink implements Product {
-    private final String size;    // small, medium, or large
-    private final String flavor;  // e.g., Coke, Sprite
+public class Drink {
+    private DrinkSize size;
+    private String flavor;
 
-    public Drink(String size, String flavor) {
+    public Drink(DrinkSize size, String flavor) {
         this.size = size;
         this.flavor = flavor;
     }
 
-    @Override
-    public String getName() {
-        return size + " Drink";
+    /**
+     * Calculate the price of the drink based on its size
+     * @return The price of the drink
+     */
+    public double calculatePrice() {
+        return PriceCalculator.getDrinkPrice(size);
     }
 
-    /**
-     * Calculates drink price based on size.
-     */
-    @Override
-    public double getPrice() {
-        return switch (size.toLowerCase()) {
-            case "small" -> 2.00;
-            case "medium" -> 2.50;
-            case "large" -> 3.00;
-            default -> 0.0;
-        };
-    }
-
-    /**
-     * Returns a formatted description of the drink.
-     */
-    @Override
-    public String getDetails() {
-        return size + " " + flavor + " - $" + String.format("%.2f", getPrice());
-    }
+    // Getters
+    public DrinkSize getSize() { return size; }
+    public String getFlavor() { return flavor; }
 }

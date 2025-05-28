@@ -1,34 +1,25 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.service.Product;
+import org.pluralsight.service.PriceCalculator;
 
 /**
- * Represents a bag of chips in the order.
- * Implements the Product interface.
+ * Represents a bag of chips
  */
-public class Chips implements Product {
-    private final String type;  // e.g., BBQ, Sour Cream, Plain
+public class Chips {
+    private String chipType;
 
-    public Chips(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public String getName() {
-        return "Chips";
-    }
-
-    @Override
-    public double getPrice() {
-        return 1.50;
+    public Chips(String chipType) {
+        this.chipType = chipType;
     }
 
     /**
-     * Returns the chip type and price.
+     * Calculate the price of the chips
+     * @return The price of the chips (fixed price)
      */
-    @Override
-    public String getDetails() {
-        return type + " Chips - $1.50";
+    public double calculatePrice() {
+        return PriceCalculator.getChipsPrice();
     }
-}
 
+    // Getter
+    public String getChipType() { return chipType; }
+}

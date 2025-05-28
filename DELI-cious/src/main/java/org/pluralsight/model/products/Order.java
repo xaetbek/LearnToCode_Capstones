@@ -1,54 +1,85 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.service.Product;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a customer's entire order consisting of multiple products.
- * Each product can be a sandwich, drink, or chips.
+ * Represents a customer order containing sandwiches, drinks, and chips
  */
 public class Order {
-    private final List<Product> items;
+    private LocalDateTime orderDateTime;
+    private List<Sandwich> sandwiches;
+    private List<Drink> drinks;
+    private List<Chips> chips;
 
     public Order() {
-        this.items = new ArrayList<>();
+        this.orderDateTime = LocalDateTime.now();
+        this.sandwiches = new ArrayList<>();
+        this.drinks = new ArrayList<>();
+        this.chips = new ArrayList<>();
     }
 
     /**
-     * Adds a new product to the order.
+     * Add a sandwich to the order
+     * @param sandwich The sandwich to add
      */
-    public void addItem(Product item) {
-        items.add(item);
+    public void addSandwich(Sandwich sandwich) {
+        sandwiches.add(sandwich);
     }
 
     /**
-     * Calculates total cost of the order.
+     * Add a drink to the order
+     * @param drink The drink to add
      */
-    public double getTotal() {
-        return items.stream()
-                .mapToDouble(Product::getPrice)
-                .sum();
+    public void addDrink(Drink drink) {
+        drinks.add(drink);
     }
 
     /**
-     * Returns a formatted summary of the entire order.
+     * Add chips to the order
+     * @param chips The chips to add
      */
-    public String getOrderDetails() {
-        StringBuilder sb = new StringBuilder("--- Order Summary ---\n");
-        for (Product item : items) {
-            sb.append("- ").append(item.getDetails()).append("\n");
+    public void addChips(Chips chips) {
+        this.chips.add(chips);
+    }
+
+    /**
+     * Calculate the total cost of the entire order
+     * @return The total cost including all items
+     */
+    public double calculateTotal() {
+        double total = 0.0;
+
+        // Add sandwich prices
+        for (Sandwich sandwich : sandwiches) {
+            total += sandwich.calculatePrice();
         }
-        sb.append("\nTotal: $").append(String.format("%.2f", getTotal()));
-        return sb.toString();
+
+        // Add drink prices
+        for (Drink drink : drinks) {
+            total += drink.calculatePrice();
+        }
+
+        // Add chips prices
+        for (Chips chip : chips) {
+            total += chip.calculatePrice();
+        }
+
+        return total;
     }
 
     /**
-     * Returns a copy of all ordered products.
+     * Check if the order is empty
+     * @return True if the order contains no items
      */
-    public List<Product> getItems() {
-        return new ArrayList<>(items);
+    public boolean isEmpty() {
+        return sandwiches.isEmpty() && drinks.isEmpty() && chips.isEmpty();
     }
-}
 
+    // Getters
+    public LocalDateTime getOrderDateTime() { return orderDateTime; }
+    public List<Sandwich> getSandwiches() { return sandwiches; }
+    public List<Drink> getDrinks() { return drinks; }
+    public List<Chips> getChips() { return chips; }
+}
