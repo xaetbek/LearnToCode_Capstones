@@ -1,0 +1,15 @@
+DELI-cious Receipt
+==================
+Date: 2025-05-28 12:16:21
+
+Sandwich #1:
+- Size: 12"
+- Bread: Rye
+- Meats: Salami (Extra), Roast Beef (Extra)
+- Cheeses: Swiss
+- Toppings: Onions, Onions, Tomatoes
+- Sauces: Thousand Islands
+Price: $13.75
+
+
+Total: $13.75

@@ -1,11 +1,30 @@
 package org.pluralsight.main;
 
-import static org.pluralsight.ui.HomeScreen.display;
+import org.pluralsight.service.OrderManager;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+/**
+ * Main application class for DELI-cious Point of Sale System
+ * Entry point for the application
+ *
+ * @author Khayotbek Azimov
+ * @version 1.0
+ * @since 2025
+ */
 public class Main {
+    /**
+     * Main method - entry point of the application
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
-        display();
+        try {
+            // Initialize and start the Order Management System
+            OrderManager orderManager = new OrderManager();
+            orderManager.start();
+
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred while starting the application:");
+            System.err.println(e.getMessage());
+            System.err.println("Please restart the application.");
+        }
     }
 }

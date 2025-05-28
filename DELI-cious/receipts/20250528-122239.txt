@@ -1,0 +1,20 @@
+DELI-cious Receipt
+==================
+Date: 2025-05-28 12:22:39
+
+Sandwich #1:
+- Size: 12"
+- Bread: White
+- Meats: Chicken (Extra)
+- Cheeses: American (Extra)
+- Toppings: Lettuce, Peppers, Onions, Tomatoes, Jalapeños
+- Sauces: Ketchup, Mustard
+- Sides: Au Jus
+- Toasted: Yes
+- Price: $10.90
+
+==================
+TOTAL: $10.90
+==================
+Thank you for your business!
+

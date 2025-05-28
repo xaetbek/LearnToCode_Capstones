@@ -1,0 +1,29 @@
+DELI-cious Receipt
+==================
+Date: 2025-05-28 12:29:04
+
+Sandwich #1:
+- Size: 8"
+- Bread: White
+- Meats: Salami (Extra), Roast Beef (Extra)
+- Cheeses: Cheddar (Extra)
+- Toppings: Onions
+- Sauces: Ketchup
+- Price: $9.60
+
+Sandwich #2:
+- Size: 4"
+- Bread: Wrap
+- Meats: Salami (Extra)
+- Cheeses: Swiss (Extra)
+- Toppings: Guacamole, Tomatoes
+- Sauces: Ketchup
+- Sides: Sauce
+- Toasted: Yes
+- Price: $6.30
+
+==================
+TOTAL: $15.90
+==================
+Thank you for your business!
+

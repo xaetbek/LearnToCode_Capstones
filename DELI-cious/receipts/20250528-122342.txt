@@ -1,0 +1,25 @@
+DELI-cious Receipt
+==================
+Date: 2025-05-28 12:23:42
+
+Sandwich #1:
+- Size: 12"
+- Bread: Rye
+- Meats: Salami (Extra)
+- Cheeses: Cheddar (Extra)
+- Toppings: Onions
+- Sauces: Ketchup
+- Sides: Sauce
+- Price: $10.90
+
+Drink #1: Large Cola
+- Price: $3.00
+
+Chips #1: BBQ
+- Price: $1.50
+
+==================
+TOTAL: $15.40
+==================
+Thank you for your business!
+

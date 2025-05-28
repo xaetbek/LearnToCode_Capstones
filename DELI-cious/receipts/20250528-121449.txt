@@ -1,0 +1,16 @@
+DELI-cious Receipt
+==================
+Date: 2025-05-28 12:14:49
+
+Sandwich #1:
+- Size: 8"
+- Bread: Wheat
+- Meats: Steak, Chicken (Extra)
+- Cheeses: Swiss (Extra)
+- Toppings: Pickles, Cucumbers, Jalapeños, Tomatoes
+- Sauces: Thousand Islands, Ranch, Ketchup, Mayo
+- Toasted: Yes
+Price: $10.60
+
+
+Total: $10.60
