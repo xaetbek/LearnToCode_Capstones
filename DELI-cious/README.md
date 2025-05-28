@@ -24,8 +24,32 @@ DELI-cious was designed to modernize the order process at a growing sandwich sho
 - UML Design and Class Diagrams
 
 ## 📁 Folder Structure
-
-- _Working on it_
+```plaintext
+DELI-cious/
+├── src/
+├───── main/
+│       └── java/
+│           └── org/
+│               └── pluralsight/
+│                      ├── main
+│                      │    └── Main.java
+│                      ├── ui/
+│                      │    ├── HomeScreen.java
+│                      │    └── OrderScreen.java
+│                      ├── model/
+│                      │    ├── Sandwich.java
+│                      │    ├── Topping.java
+│                      │    ├── Drink.java
+│                      │    ├── Chip.java
+│                      │    └── Order.java
+│                      └── util/
+│                           └── ReceiptWriter.java
+├── receipts/
+├── .gitignore
+├── README.md
+├── pom.xml
+└── LICENSE
+```
 
 ## 📷 Screenshots
 Coming soon: Include screenshots of each screen (Home, Add Sandwich, Checkout, etc.) once development progresses.
