@@ -1,4 +1,4 @@
-package org.pluralsight.model;
+package org.pluralsight.model.toppings;
 
 /**
  * Represents a topping added to a sandwich.

@@ -1,6 +1,6 @@
-package org.pluralsight.model;
+package org.pluralsight.model.products;
 
-import org.pluralsight.interfaces.Product;
+import org.pluralsight.service.Product;
 
 /**
  * Represents a bag of chips in the order.

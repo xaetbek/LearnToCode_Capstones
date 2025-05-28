@@ -1,4 +1,4 @@
-package org.pluralsight.UI;
+package org.pluralsight.ui;
 
 import java.util.Scanner;
 

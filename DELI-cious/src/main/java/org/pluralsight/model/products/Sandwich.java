@@ -1,6 +1,7 @@
-package org.pluralsight.model;
+package org.pluralsight.model.products;
 
-import org.pluralsight.interfaces.Product;
+import org.pluralsight.service.Product;
+import org.pluralsight.model.toppings.Topping;
 
 import java.util.ArrayList;
 import java.util.List;

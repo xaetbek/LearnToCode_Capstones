@@ -1,6 +1,6 @@
-package org.pluralsight.model;
+package org.pluralsight.model.products;
 
-import org.pluralsight.interfaces.Product;
+import org.pluralsight.service.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.List;
  * Represents a customer's entire order consisting of multiple products.
  * Each product can be a sandwich, drink, or chips.
  */
-public class Checkout {
+public class Order {
     private final List<Product> items;
 
-    public Checkout() {
+    public Order() {
         this.items = new ArrayList<>();
     }
 

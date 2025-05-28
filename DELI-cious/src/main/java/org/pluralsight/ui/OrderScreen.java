@@ -1,8 +1,8 @@
-package org.pluralsight.UI;
+package org.pluralsight.ui;
 
 
-import org.pluralsight.model.Sandwich;
-import org.pluralsight.model.Topping;
+import org.pluralsight.model.products.Sandwich;
+import org.pluralsight.model.toppings.Topping;
 
 import java.util.ArrayList;
 import java.util.List;
