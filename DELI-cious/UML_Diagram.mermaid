@@ -1,0 +1,217 @@
+classDiagram
+    class Order {
+        -Date orderDate
+        -Time orderTime
+        -List~Sandwich~ sandwiches
+        -List~Drink~ drinks
+        -List~Chips~ chips
+        -double totalCost
+        +addSandwich(Sandwich)
+        +addDrink(Drink)
+        +addChips(Chips)
+        +calculateTotal() double
+        +generateReceipt() String
+        +saveToFile()
+    }
+
+    class Sandwich {
+        -SandwichSize size
+        -BreadType breadType
+        -List~Meat~ meats
+        -List~Cheese~ cheeses
+        -List~RegularTopping~ regularToppings
+        -List~Sauce~ sauces
+        -List~Side~ sides
+        -boolean isToasted
+        +calculatePrice() double
+        +addMeat(Meat, boolean isExtra)
+        +addCheese(Cheese, boolean isExtra)
+        +addRegularTopping(RegularTopping)
+        +addSauce(Sauce)
+        +addSide(Side)
+        +setToasted(boolean)
+    }
+
+    class Drink {
+        -DrinkSize size
+        -String flavor
+        +calculatePrice() double
+    }
+
+    class Chips {
+        -String chipType
+        +calculatePrice() double
+    }
+
+    class Topping {
+        <<abstract>>
+        -String name
+        -ToppingType type
+        +getName() String
+        +getType() ToppingType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class Meat {
+        -MeatType meatType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class Cheese {
+        -CheeseType cheeseType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class RegularTopping {
+        -RegularToppingType toppingType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class Sauce {
+        -SauceType sauceType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class Side {
+        -SideType sideType
+        +calculatePrice(SandwichSize, boolean isExtra) double
+    }
+
+    class SandwichSize {
+        <<enumeration>>
+        FOUR_INCH
+        EIGHT_INCH
+        TWELVE_INCH
+    }
+
+    class BreadType {
+        <<enumeration>>
+        WHITE
+        WHEAT
+        RYE
+        WRAP
+    }
+
+    class MeatType {
+        <<enumeration>>
+        STEAK
+        TURKEY
+        SALAMI
+        ROAST_BEEF
+        CHICKEN
+        BBQ_CHICKEN
+    }
+
+    class CheeseType {
+        <<enumeration>>
+        AMERICAN
+        PROVOLONE
+        CHEDDAR
+        SWISS
+    }
+
+    class RegularToppingType {
+        <<enumeration>>
+        LETTUCE
+        PEPPERS
+        ONIONS
+        TOMATOES
+        JALAPENOS
+        CUCUMBERS
+        PICKLES
+        GUACAMOLE
+        MUSHROOMS
+    }
+
+    class SauceType {
+        <<enumeration>>
+        MAYO
+        MUSTARD
+        KETCHUP
+        RANCH
+        THOUSAND_ISLANDS
+        VINAIGRETTE
+    }
+
+    class SideType {
+        <<enumeration>>
+        AU_JUS
+        SAUCE
+    }
+
+    class DrinkSize {
+        <<enumeration>>
+        SMALL
+        MEDIUM
+        LARGE
+    }
+
+    class ToppingType {
+        <<enumeration>>
+        MEAT
+        CHEESE
+        REGULAR
+        SAUCE
+        SIDE
+    }
+
+    class PriceCalculator {
+        +getSandwichBasePrice(SandwichSize) double
+        +getMeatPrice(SandwichSize, boolean isExtra) double
+        +getCheesePrice(SandwichSize, boolean isExtra) double
+        +getDrinkPrice(DrinkSize) double
+        +getChipsPrice() double
+    }
+
+    class UserInterface {
+        +displayHomeScreen()
+        +displayOrderScreen()
+        +displaySandwichBuilder()
+        +displayDrinkSelector()
+        +displayChipsSelector()
+        +displayCheckout()
+        +getUserInput() String
+    }
+
+    class OrderManager {
+        -Order currentOrder
+        +createNewOrder()
+        +addSandwichToOrder()
+        +addDrinkToOrder()
+        +addChipsToOrder()
+        +checkout()
+        +cancelOrder()
+    }
+
+    class ReceiptGenerator {
+        +generateReceipt(Order) String
+        +saveReceiptToFile(Order, String)
+        +formatOrderDetails(Order) String
+    }
+
+    %% Relationships
+    Order "1" *-- "0..*" Sandwich : contains
+    Order "1" *-- "0..*" Drink : contains
+    Order "1" *-- "0..*" Chips : contains
+    
+    Sandwich "1" *-- "0..*" Meat : contains
+    Sandwich "1" *-- "0..*" Cheese : contains
+    Sandwich "1" *-- "0..*" RegularTopping : contains
+    Sandwich "1" *-- "0..*" Sauce : contains
+    Sandwich "1" *-- "0..*" Side : contains
+    
+    Topping <|-- Meat : extends
+    Topping <|-- Cheese : extends
+    Topping <|-- RegularTopping : extends
+    Topping <|-- Sauce : extends
+    Topping <|-- Side : extends
+    
+    OrderManager --> Order : manages
+    OrderManager --> UserInterface : uses
+    OrderManager --> ReceiptGenerator : uses
+    
+    Sandwich --> PriceCalculator : uses
+    Drink --> PriceCalculator : uses
+    Chips --> PriceCalculator : uses
+    
+    ReceiptGenerator --> Order : processes

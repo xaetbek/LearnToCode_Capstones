@@ -1,4 +1,4 @@
-package org.pluralsight.model;
+package org.pluralsight.interfaces;
 
 /**
  * Represents a generic product in an order (e.g., sandwich, drink, chips).

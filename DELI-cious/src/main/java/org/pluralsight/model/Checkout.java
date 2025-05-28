@@ -1,5 +1,7 @@
 package org.pluralsight.model;
 
+import org.pluralsight.interfaces.Product;
+
 import java.util.ArrayList;
 import java.util.List;
 

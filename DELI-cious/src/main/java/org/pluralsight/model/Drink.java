@@ -1,5 +1,7 @@
 package org.pluralsight.model;
 
+import org.pluralsight.interfaces.Product;
+
 /**
  * Represents a drink item in the order.
  * Implements the Product interface.

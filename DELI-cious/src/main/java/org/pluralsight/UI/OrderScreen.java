@@ -128,9 +128,8 @@ public class OrderScreen {
                 .mapToDouble(Sandwich::getPrice)
                 .sum();
 
-        sandwiches.forEach(s -> {
-            System.out.println("\n" + s);
-        });
+        sandwiches.forEach(s -> System.out.println("\n" + s.getDetails()));
+
 
         System.out.printf("\nTotal: $%.2f%n", total);
         System.out.println("Thank you for your order!");

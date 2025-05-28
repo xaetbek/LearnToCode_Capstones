@@ -1,5 +1,7 @@
 package org.pluralsight.model;
 
+import org.pluralsight.interfaces.Product;
+
 /**
  * Represents a bag of chips in the order.
  * Implements the Product interface.
