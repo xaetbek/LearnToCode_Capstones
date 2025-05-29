@@ -17,10 +17,7 @@ import java.util.stream.Stream;
 public class HomeScreen {
     private static Scanner scanner = new Scanner(System.in);
 
-    /**
-     * Display the main menu and get user choice with validation
-     * @return The user's menu choice
-     */
+    // Display the main menu and get user choice with validation
     public static int getMainMenuChoice() {
         System.out.println("\n=== HOME ===");
         System.out.println("1. View Menu");
@@ -30,9 +27,7 @@ public class HomeScreen {
         return getValidMenuChoice(0, 3, "Choose an option: ");
     }
 
-    /**
-     * Display all available menu items with prices
-     */
+    // Display all available menu items with prices
     public static void displayMenuItems() {
         System.out.println("\n========== DELI-cious Menu ==========");
 

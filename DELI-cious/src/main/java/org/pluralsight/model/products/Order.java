@@ -40,30 +40,22 @@ public class Order {
      * @return The total cost including all items
      */
     public double calculateTotal() {
-        double total = 0.0;
+        double sandwichTotal = sandwiches.stream()
+                .mapToDouble(Sandwich::calculatePrice)
+                .sum();
 
-        // Add sandwich prices
-        for (Sandwich sandwich : sandwiches) {
-            total += sandwich.calculatePrice();
-        }
+        double drinkTotal = drinks.stream()
+                .mapToDouble(Drink::calculatePrice)
+                .sum();
 
-        // Add drink prices
-        for (Drink drink : drinks) {
-            total += drink.calculatePrice();
-        }
+        double chipsTotal = chips.stream()
+                .mapToDouble(Chips::calculatePrice)
+                .sum();
 
-        // Add chips prices
-        for (Chips chip : chips) {
-            total += chip.calculatePrice();
-        }
-
-        return total;
+        return sandwichTotal + drinkTotal + chipsTotal;
     }
 
-    /**
-     * Check if the order is empty
-     * @return True if the order contains no items
-     */
+    // Check if the order is empty
     public boolean isEmpty() {
         return sandwiches.isEmpty() && drinks.isEmpty() && chips.isEmpty();
     }
