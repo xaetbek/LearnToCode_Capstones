@@ -20,26 +20,17 @@ public class Order {
         this.chips = new ArrayList<>();
     }
 
-    /**
-     * Add a sandwich to the order
-     * @param sandwich The sandwich to add
-     */
+    // Add a sandwich to the order
     public void addSandwich(Sandwich sandwich) {
         sandwiches.add(sandwich);
     }
 
-    /**
-     * Add a drink to the order
-     * @param drink The drink to add
-     */
+    // Add a drink to the order
     public void addDrink(Drink drink) {
         drinks.add(drink);
     }
 
-    /**
-     * Add chips to the order
-     * @param chips The chips to add
-     */
+    // Add chips to the order
     public void addChips(Chips chips) {
         this.chips.add(chips);
     }

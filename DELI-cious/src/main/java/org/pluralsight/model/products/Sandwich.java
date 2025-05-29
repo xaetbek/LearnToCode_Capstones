@@ -31,60 +31,38 @@ public class Sandwich {
         this.isToasted = false;
     }
 
-    /**
-     * Add a meat topping to the sandwich
-     * @param meatType The type of meat to add
-     * @param isExtra Whether this is an extra portion
-     */
+    // Add a meat topping to the sandwich
     public void addMeat(MeatType meatType, boolean isExtra) {
         meats.add(new Meat(meatType, isExtra));
     }
 
-    /**
-     * Add a cheese topping to the sandwich
-     * @param cheeseType The type of cheese to add
-     * @param isExtra Whether this is an extra portion
-     */
+
+    // Add a cheese topping to the sandwich
     public void addCheese(CheeseType cheeseType, boolean isExtra) {
         cheeses.add(new Cheese(cheeseType, isExtra));
     }
 
-    /**
-     * Add a regular topping to the sandwich
-     * @param toppingType The type of regular topping to add
-     */
+    // Add a regular topping to the sandwich
     public void addRegularTopping(RegularToppingType toppingType) {
         regularToppings.add(new RegularTopping(toppingType));
     }
 
-    /**
-     * Add a sauce to the sandwich
-     * @param sauceType The type of sauce to add
-     */
+    //Add a sauce to the sandwich
     public void addSauce(SauceType sauceType) {
         sauces.add(new Sauce(sauceType));
     }
 
-    /**
-     * Add a side to the sandwich
-     * @param sideType The type of side to add
-     */
+    // Add a side to the sandwich
     public void addSide(SideType sideType) {
         sides.add(new Side(sideType));
     }
 
-    /**
-     * Set whether the sandwich should be toasted
-     * @param toasted True if the sandwich should be toasted
-     */
+    // Set whether the sandwich should be toasted
     public void setToasted(boolean toasted) {
         this.isToasted = toasted;
     }
 
-    /**
-     * Calculate the total price of the sandwich
-     * @return The total price including base price and all toppings
-     */
+    //Calculate the total price of the sandwich
     public double calculatePrice() {
         double total = PriceCalculator.getSandwichBasePrice(size);
 

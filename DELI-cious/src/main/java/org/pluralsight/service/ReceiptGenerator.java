@@ -47,7 +47,7 @@ public class ReceiptGenerator {
 
         // Header
         receipt.append("DELI-cious Receipt\n");
-        receipt.append("==================\n");
+        receipt.append("====================\n");
         receipt.append("Date: ").append(order.getOrderDateTime().format(formatter)).append("\n\n");
 
         // Sandwiches

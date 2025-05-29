@@ -22,8 +22,8 @@ public class HomeScreen {
      * @return The user's menu choice
      */
     public static int getMainMenuChoice() {
-        System.out.println("\n=== Main Menu ===");
-        System.out.println("1. View Menu Items");
+        System.out.println("\n=== HOME ===");
+        System.out.println("1. View Menu");
         System.out.println("2. New Order");
         System.out.println("3. Order History");
         System.out.println("0. Exit");
@@ -190,10 +190,7 @@ public class HomeScreen {
         }
     }
 
-    /**
-     * Display a preview of a receipt file
-     * @param receiptFile The receipt file to preview
-     */
+    // Display a preview of a receipt file
     private static void displayReceiptPreview(File receiptFile) {
         try {
             Path path = Paths.get(receiptFile.getPath());
@@ -215,9 +212,9 @@ public class HomeScreen {
         int choice = getValidMenuChoice(1, maxReceipts, "Enter receipt number (1-" + maxReceipts + "): ");
 
         File selectedFile = receiptFiles[choice - 1];
-        System.out.println("\n" + "=".repeat(50));
-        System.out.println("FULL RECEIPT:");
-        System.out.println("=".repeat(50));
+        System.out.println("\n" + "=".repeat(20));
+        System.out.println("  FULL RECEIPT");
+        System.out.println("=".repeat(20));
 
         try {
             Path path = Paths.get(selectedFile.getPath());
@@ -229,13 +226,7 @@ public class HomeScreen {
         System.out.println("=".repeat(50));
     }
 
-    /**
-     * Get valid menu choice with range validation
-     * @param min Minimum valid choice
-     * @param max Maximum valid choice
-     * @param prompt The prompt message
-     * @return Valid menu choice within range
-     */
+    // Get valid menu choice with range validation
     private static int getValidMenuChoice(int min, int max, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -249,11 +240,7 @@ public class HomeScreen {
         }
     }
 
-    /**
-     * Get boolean input from user with validation and case-insensitive checking
-     * @param prompt The prompt message to display
-     * @return True for yes responses, false for no responses
-     */
+    // Get boolean input from a user with validation and case-insensitive checking
     private static boolean getBooleanInput(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -275,10 +262,7 @@ public class HomeScreen {
         }
     }
 
-    /**
-     * Get integer input from user with error handling and validation
-     * @return The integer input
-     */
+    // Get integer input from user with error handling and validation
     private static int getIntInput() {
         while (true) {
             try {
@@ -294,17 +278,12 @@ public class HomeScreen {
         }
     }
 
-    /**
-     * Display a message to the user
-     * @param message The message to display
-     */
+    // Display a message to the user
     public static void displayMessage(String message) {
         System.out.println(message);
     }
 
-    /**
-     * Display welcome message
-     */
+    // Display welcome message
     public static void displayWelcome() {
         System.out.println("\n" + "=".repeat(40));
         System.out.println("         Welcome to DELI-cious!");

@@ -11,13 +11,11 @@ import org.pluralsight.ui.OrderScreen;
 public class OrderManager {
     private Order currentOrder;
 
-    /**
-     * Start the DELI-cious POS application
-     */
+    // Start the DELI-cious POS application
     public void start() {
         boolean running = true;
 
-        // Display welcome message
+        // Display a welcome message
         HomeScreen.displayWelcome();
 
         while (running) {
@@ -43,9 +41,7 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Start a new order process
-     */
+    // Start a new order process
     private void startNewOrder() {
         currentOrder = new Order();
         boolean orderInProgress = true;
@@ -78,9 +74,7 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Add a sandwich to the current order
-     */
+    // Add a sandwich to the current order
     private void addSandwichToOrder() {
         try {
             Sandwich sandwich = OrderScreen.buildSandwich();
@@ -92,9 +86,7 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Add a drink to the current order
-     */
+    // Add a drink to the current order
     private void addDrinkToOrder() {
         try {
             Drink drink = OrderScreen.buildDrink();
@@ -106,9 +98,7 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Add chips to the current order
-     */
+    // Add chips to the current order
     private void addChipsToOrder() {
         try {
             Chips chips = OrderScreen.buildChips();
@@ -152,9 +142,7 @@ public class OrderManager {
         }
     }
 
-    /**
-     * Confirm the order and generate receipt
-     */
+    // Confirm the order and generate receipt */
     private void confirmOrder() {
         try {
             // Generate and save receipt
