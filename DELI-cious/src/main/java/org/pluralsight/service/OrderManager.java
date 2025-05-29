@@ -9,70 +9,7 @@ import org.pluralsight.ui.OrderScreen;
  * between the user interface and business logic
  */
 public class OrderManager {
-    private Order currentOrder;
 
-    // Start the DELI-cious POS application
-    public void start() {
-        boolean running = true;
-
-        // Display a welcome message
-        HomeScreen.displayWelcome();
-
-        while (running) {
-            int choice = HomeScreen.getMainMenuChoice();
-
-            switch (choice) {
-                case 1:
-                    HomeScreen.displayMenuItems();
-                    break;
-                case 2:
-                    startNewOrder();
-                    break;
-                case 3:
-                    HomeScreen.displayOrderHistory();
-                    break;
-                case 0:
-                    HomeScreen.displayMessage("Thank you for visiting DELI-cious!");
-                    running = false;
-                    break;
-                default:
-                    HomeScreen.displayMessage("Invalid choice. Please try again.");
-            }
-        }
-    }
-
-    // Start a new order process
-    private void startNewOrder() {
-        currentOrder = new Order();
-        boolean orderInProgress = true;
-
-        HomeScreen.displayMessage("Starting new order...");
-
-        while (orderInProgress) {
-            int choice = OrderScreen.getOrderMenuChoice();
-
-            switch (choice) {
-                case 1:
-                    addSandwichToOrder();
-                    break;
-                case 2:
-                    addDrinkToOrder();
-                    break;
-                case 3:
-                    addChipsToOrder();
-                    break;
-                case 4:
-                    orderInProgress = !checkout();
-                    break;
-                case 0:
-                    HomeScreen.displayMessage("Order cancelled. Returning to main menu.");
-                    orderInProgress = false;
-                    break;
-                default:
-                    OrderScreen.displayMessage("Invalid choice. Please try again.");
-            }
-        }
-    }
 
     // Add a sandwich to the current order
     private void addSandwichToOrder() {

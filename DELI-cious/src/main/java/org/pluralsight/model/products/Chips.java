@@ -5,10 +5,11 @@ import org.pluralsight.service.PriceCalculator;
 /**
  * Represents a bag of chips
  */
-public class Chips {
+public class Chips extends AbstractMenuItem{
     private String chipType;
 
     public Chips(String chipType) {
+        super(chipType + " Chips", PriceCalculator.getChipsPrice());
         this.chipType = chipType;
     }
 

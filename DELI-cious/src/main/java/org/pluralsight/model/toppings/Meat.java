@@ -19,14 +19,10 @@ public class Meat extends Topping {
 
     @Override
     public double calculatePrice(SandwichSize size, boolean isExtra) {
-        return PriceCalculator.getMeatPrice(size, this.isExtra);
+        return PriceCalculator.getMeatPrice(size, isExtra);
     }
 
     public boolean isExtra() {
         return isExtra;
-    }
-
-    public MeatType getMeatType() {
-        return meatType;
     }
 }

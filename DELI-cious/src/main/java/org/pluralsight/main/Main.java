@@ -1,6 +1,7 @@
 package org.pluralsight.main;
 
 import org.pluralsight.service.OrderManager;
+import org.pluralsight.ui.HomeScreen;
 
 /**
  * Main application class for DELI-cious Point of Sale System
@@ -18,8 +19,8 @@ public class Main {
     public static void main(String[] args) {
         try {
             // Initialize and start the Order Management System
-            OrderManager orderManager = new OrderManager();
-            orderManager.start();
+            HomeScreen homeScreen = new HomeScreen();
+            homeScreen.start();
 
         } catch (Exception e) {
             System.err.println("An unexpected error occurred while starting the application:");

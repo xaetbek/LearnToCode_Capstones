@@ -1,12 +1,12 @@
 package org.pluralsight.model.products;
 
+import org.pluralsight.model.interfaces.iPriceable;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents a customer order containing sandwiches, drinks, and chips
- */
+// Order with only essential methods
 public class Order {
     private LocalDateTime orderDateTime;
     private List<Sandwich> sandwiches;
@@ -20,49 +20,43 @@ public class Order {
         this.chips = new ArrayList<>();
     }
 
-    // Add a sandwich to the order
+    // Add products - ALL YOUR EXISTING METHODS STAY THE SAME
     public void addSandwich(Sandwich sandwich) {
         sandwiches.add(sandwich);
     }
 
-    // Add a drink to the order
     public void addDrink(Drink drink) {
         drinks.add(drink);
     }
 
-    // Add chips to the order
     public void addChips(Chips chips) {
         this.chips.add(chips);
     }
 
-    /**
-     * Calculate the total cost of the entire order
-     * @return The total cost including all items
-     */
-    public double calculateTotal() {
-        double sandwichTotal = sandwiches.stream()
-                .mapToDouble(Sandwich::calculatePrice)
-                .sum();
-
-        double drinkTotal = drinks.stream()
-                .mapToDouble(Drink::calculatePrice)
-                .sum();
-
-        double chipsTotal = chips.stream()
-                .mapToDouble(Chips::calculatePrice)
-                .sum();
-
-        return sandwichTotal + drinkTotal + chipsTotal;
+    // Helper method to get all products as iPriceable
+    public List<iPriceable> getAllProducts() {
+        List<iPriceable> allProducts = new ArrayList<>();
+        allProducts.addAll(sandwiches);  // Sandwich implements iPriceable
+        allProducts.addAll(drinks);      // Drink implements iPriceable
+        allProducts.addAll(chips);       // Chips implements iPriceable
+        return allProducts;
     }
 
-    // Check if the order is empty
+    // MAIN METHOD: Calculate total using streams and iPriceable interface
+    public double calculateTotal() {
+        return getAllProducts().stream()
+                .mapToDouble(iPriceable::calculatePrice)  // Method reference to interface method
+                .sum();
+    }
+
+    // Check if order is empty
     public boolean isEmpty() {
         return sandwiches.isEmpty() && drinks.isEmpty() && chips.isEmpty();
     }
 
-    // Getters
+    // All the getters
     public LocalDateTime getOrderDateTime() { return orderDateTime; }
-    public List<Sandwich> getSandwiches() { return sandwiches; }
-    public List<Drink> getDrinks() { return drinks; }
-    public List<Chips> getChips() { return chips; }
+    public List<Sandwich> getSandwiches() { return new ArrayList<>(sandwiches); }
+    public List<Drink> getDrinks() { return new ArrayList<>(drinks); }
+    public List<Chips> getChips() { return new ArrayList<>(chips); }
 }

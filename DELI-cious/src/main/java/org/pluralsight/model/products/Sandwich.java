@@ -6,11 +6,10 @@ import org.pluralsight.service.PriceCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Represents a customizable sandwich
- */
-public class Sandwich {
+// Sandwich extends AbstractMenuItem (no Customizable interface needed)
+public class Sandwich extends AbstractMenuItem {
     private SandwichSize size;
     private BreadType breadType;
     private List<Meat> meats;
@@ -21,6 +20,10 @@ public class Sandwich {
     private boolean isToasted;
 
     public Sandwich(SandwichSize size, BreadType breadType) {
+        // Call parent constructor
+        super(size.getDisplayName() + " " + breadType.getDisplayName() + " Sandwich",
+                PriceCalculator.getSandwichBasePrice(size));
+
         this.size = size;
         this.breadType = breadType;
         this.meats = new ArrayList<>();
@@ -31,62 +34,51 @@ public class Sandwich {
         this.isToasted = false;
     }
 
-    // Add a meat topping to the sandwich
+    // Implements abstract method from AbstractMenuItem
+    @Override
+    public double calculatePrice() {
+        double meatTotal = meats.stream()
+                .mapToDouble(meat -> meat.calculatePrice(size, meat.isExtra()))
+                .sum();
+
+        double cheeseTotal = cheeses.stream()
+                .mapToDouble(cheese -> cheese.calculatePrice(size, cheese.isExtra()))
+                .sum();
+
+        return basePrice + meatTotal + cheeseTotal;
+    }
+
     public void addMeat(MeatType meatType, boolean isExtra) {
         meats.add(new Meat(meatType, isExtra));
     }
 
-
-    // Add a cheese topping to the sandwich
     public void addCheese(CheeseType cheeseType, boolean isExtra) {
         cheeses.add(new Cheese(cheeseType, isExtra));
     }
 
-    // Add a regular topping to the sandwich
     public void addRegularTopping(RegularToppingType toppingType) {
         regularToppings.add(new RegularTopping(toppingType));
     }
 
-    //Add a sauce to the sandwich
     public void addSauce(SauceType sauceType) {
         sauces.add(new Sauce(sauceType));
     }
 
-    // Add a side to the sandwich
     public void addSide(SideType sideType) {
         sides.add(new Side(sideType));
     }
 
-    // Set whether the sandwich should be toasted
     public void setToasted(boolean toasted) {
         this.isToasted = toasted;
     }
 
-    //Calculate the total price of the sandwich
-    public double calculatePrice() {
-        double total = PriceCalculator.getSandwichBasePrice(size);
-
-        // Add meat prices
-        for (Meat meat : meats) {
-            total += meat.calculatePrice(size, meat.isExtra());
-        }
-
-        // Add cheese prices
-        for (Cheese cheese : cheeses) {
-            total += cheese.calculatePrice(size, cheese.isExtra());
-        }
-
-        // Regular toppings, sauces, and sides are free
-        return total;
-    }
-
-    // Getters
+    // All your existing getters stay the same
     public SandwichSize getSize() { return size; }
     public BreadType getBreadType() { return breadType; }
-    public List<Meat> getMeats() { return meats; }
-    public List<Cheese> getCheeses() { return cheeses; }
-    public List<RegularTopping> getRegularToppings() { return regularToppings; }
-    public List<Sauce> getSauces() { return sauces; }
-    public List<Side> getSides() { return sides; }
+    public List<Meat> getMeats() { return new ArrayList<>(meats); }
+    public List<Cheese> getCheeses() { return new ArrayList<>(cheeses); }
+    public List<RegularTopping> getRegularToppings() { return new ArrayList<>(regularToppings); }
+    public List<Sauce> getSauces() { return new ArrayList<>(sauces); }
+    public List<Side> getSides() { return new ArrayList<>(sides); }
     public boolean isToasted() { return isToasted; }
 }

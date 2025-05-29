@@ -17,6 +17,36 @@ import java.util.stream.Stream;
 public class HomeScreen {
     private static Scanner scanner = new Scanner(System.in);
 
+    // Start the DELI-cious POS application
+    public void start() {
+        boolean running = true;
+
+        // Display a welcome message
+        HomeScreen.displayWelcome();
+
+        while (running) {
+            int choice = getMainMenuChoice();
+
+            switch (choice) {
+                case 1:
+                    displayMenuItems();
+                    break;
+                case 2:
+                    OrderScreen.startNewOrder();
+                    break;
+                case 3:
+                    displayOrderHistory();
+                    break;
+                case 0:
+                    displayMessage("Thank you for visiting DELI-cious!");
+                    running = false;
+                    break;
+                default:
+                    displayMessage("Invalid choice. Please try again.");
+            }
+        }
+    }
+
     // Display the main menu and get user choice with validation
     public static int getMainMenuChoice() {
         System.out.println("\n=== HOME ===");

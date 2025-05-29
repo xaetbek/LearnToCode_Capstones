@@ -6,11 +6,12 @@ import org.pluralsight.service.PriceCalculator;
 /**
  * Represents a drink product
  */
-public class Drink {
+public class Drink extends AbstractMenuItem{
     private DrinkSize size;
     private String flavor;
 
     public Drink(DrinkSize size, String flavor) {
+        super(size.getDisplayName() + " " + flavor, PriceCalculator.getDrinkPrice(size));
         this.size = size;
         this.flavor = flavor;
     }

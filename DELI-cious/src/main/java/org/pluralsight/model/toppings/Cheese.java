@@ -19,7 +19,7 @@ public class Cheese extends Topping {
 
     @Override
     public double calculatePrice(SandwichSize size, boolean isExtra) {
-        return PriceCalculator.getCheesePrice(size, this.isExtra);
+        return PriceCalculator.getCheesePrice(size, isExtra);
     }
 
     public boolean isExtra() {

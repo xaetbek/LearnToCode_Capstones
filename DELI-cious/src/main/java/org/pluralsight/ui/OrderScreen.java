@@ -3,20 +3,50 @@ package org.pluralsight.ui;
 import org.pluralsight.model.enums.*;
 import org.pluralsight.model.products.*;
 import org.pluralsight.model.toppings.*;
+import org.pluralsight.service.OrderManager;
 import org.pluralsight.service.PriceCalculator;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-/**
- * Handles the order screen and sandwich/product customization
- */
 public class OrderScreen {
     private static Scanner scanner = new Scanner(System.in);
+    private static Order currentOrder;
 
-    /**
-     * Display the order menu and get user choice with validation
-     * @return The user's menu choice
-     */
+
+    // Start a new order process
+    public static void startNewOrder() {
+        currentOrder = new Order();
+        boolean orderInProgress = true;
+
+        HomeScreen.displayMessage("Starting new order...");
+
+        while (orderInProgress) {
+            int choice = OrderScreen.getOrderMenuChoice();
+
+            switch (choice) {
+                case 1:
+                    OrderManager.addSandwichToOrder();
+                    break;
+                case 2:
+                    OrderManager.addDrinkToOrder();
+                    break;
+                case 3:
+                    addChipsToOrder();
+                    break;
+                case 4:
+                    orderInProgress = !checkout();
+                    break;
+                case 0:
+                    HomeScreen.displayMessage("Order cancelled. Returning to main menu.");
+                    orderInProgress = false;
+                    break;
+                default:
+                    OrderScreen.displayMessage("Invalid choice. Please try again.");
+            }
+        }
+    }
+
     public static int getOrderMenuChoice() {
         System.out.println("\n========== Order Menu ==========");
         System.out.println("1) Add Sandwich");
@@ -27,14 +57,9 @@ public class OrderScreen {
         return getValidMenuChoice(0, 4, "Enter your choice: ");
     }
 
-    /**
-     * Guide the user through building a custom sandwich
-     * @return A fully configured Sandwich object
-     */
     public static Sandwich buildSandwich() {
         System.out.println("\n========== Add Sandwich ==========");
 
-        // Select bread type
         System.out.println("Select your bread:");
         BreadType[] breads = BreadType.values();
         for (int i = 0; i < breads.length; i++) {
@@ -42,7 +67,6 @@ public class OrderScreen {
         }
         int breadChoice = getValidMenuChoice(1, breads.length, "Enter choice: ") - 1;
 
-        // Select sandwich size
         System.out.println("\nSandwich size:");
         SandwichSize[] sizes = SandwichSize.values();
         for (int i = 0; i < sizes.length; i++) {
@@ -53,34 +77,31 @@ public class OrderScreen {
 
         Sandwich sandwich = new Sandwich(sizes[sizeChoice], breads[breadChoice]);
 
-        // Add toppings
         addMeatsToSandwich(sandwich);
         addCheesesToSandwich(sandwich);
         addRegularToppingsToSandwich(sandwich);
         addSaucesToSandwich(sandwich);
         addSidesToSandwich(sandwich);
 
-        // Toasted option
         sandwich.setToasted(getBooleanInput("\nWould you like the sandwich toasted? (y/n): "));
 
         return sandwich;
     }
 
-    /**
-     * Add meat toppings to a sandwich
-     * @param sandwich The sandwich to add meats to
-     */
     private static void addMeatsToSandwich(Sandwich sandwich) {
         System.out.println("\nSelect meats (enter 0 to finish):");
         MeatType[] meats = MeatType.values();
 
         while (true) {
-            for (int i = 0; i < meats.length; i++) {
-                double regularPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), false);
-                double extraPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), true);
-                System.out.printf("%d) %s - $%.2f (Extra: $%.2f)%n",
-                        i + 1, meats[i].getDisplayName(), regularPrice, extraPrice);
-            }
+            // Use stream to display meat options with prices
+            Arrays.stream(meats)
+                    .forEach(meat -> {
+                        int index = Arrays.asList(meats).indexOf(meat) + 1;
+                        double regularPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), false);
+                        double extraPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), true);
+                        System.out.printf("%d) %s - Regular: $%.2f, Extra: $%.2f%n",
+                                index, meat.getDisplayName(), regularPrice, extraPrice);
+                    });
             System.out.println("0) Done with meats");
 
             int choice = getValidMenuChoice(0, meats.length, "Enter choice: ") - 1;
@@ -88,28 +109,33 @@ public class OrderScreen {
 
             boolean isExtra = getBooleanInput("Extra meat? (y/n): ");
 
-            sandwich.addMeat(meats[choice], isExtra);
-            double price = PriceCalculator.getMeatPrice(sandwich.getSize(), isExtra);
-            System.out.println("Added " + meats[choice].getDisplayName() +
-                    (isExtra ? " (Extra)" : "") + " - $" + String.format("%.2f", price));
+            // Use stream to get selected meat safely
+            MeatType selectedMeat = Arrays.stream(meats)
+                    .skip(choice)
+                    .findFirst()
+                    .orElse(MeatType.TURKEY); // Safe fallback to first enum value
+
+            sandwich.addMeat(selectedMeat, isExtra);
+            double actualPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), isExtra);
+            System.out.println("Added " + selectedMeat.getDisplayName() +
+                    (isExtra ? " (Extra)" : " (Regular)") + " - $" + String.format("%.2f", actualPrice));
         }
     }
 
-    /**
-     * Add cheese toppings to a sandwich
-     * @param sandwich The sandwich to add cheeses to
-     */
     private static void addCheesesToSandwich(Sandwich sandwich) {
         System.out.println("\nSelect cheeses (enter 0 to finish):");
         CheeseType[] cheeses = CheeseType.values();
 
         while (true) {
-            for (int i = 0; i < cheeses.length; i++) {
-                double regularPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), false);
-                double extraPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), true);
-                System.out.printf("%d) %s - $%.2f (Extra: $%.2f)%n",
-                        i + 1, cheeses[i].getDisplayName(), regularPrice, extraPrice);
-            }
+            // Use stream to display cheese options with prices
+            Arrays.stream(cheeses)
+                    .forEach(cheese -> {
+                        int index = Arrays.asList(cheeses).indexOf(cheese) + 1;
+                        double regularPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), false);
+                        double extraPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), true);
+                        System.out.printf("%d) %s - Regular: $%.2f, Extra: $%.2f%n",
+                                index, cheese.getDisplayName(), regularPrice, extraPrice);
+                    });
             System.out.println("0) Done with cheeses");
 
             int choice = getValidMenuChoice(0, cheeses.length, "Enter choice: ") - 1;
@@ -117,171 +143,183 @@ public class OrderScreen {
 
             boolean isExtra = getBooleanInput("Extra cheese? (y/n): ");
 
-            sandwich.addCheese(cheeses[choice], isExtra);
-            double price = PriceCalculator.getCheesePrice(sandwich.getSize(), isExtra);
-            System.out.println("Added " + cheeses[choice].getDisplayName() +
-                    (isExtra ? " (Extra)" : "") + " - $" + String.format("%.2f", price));
+            // Use stream to get selected cheese safely
+            CheeseType selectedCheese = Arrays.stream(cheeses)
+                    .skip(choice)
+                    .findFirst()
+                    .orElse(CheeseType.AMERICAN); // Safe fallback to first enum value
+
+            sandwich.addCheese(selectedCheese, isExtra);
+            double actualPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), isExtra);
+            System.out.println("Added " + selectedCheese.getDisplayName() +
+                    (isExtra ? " (Extra)" : " (Regular)") + " - $" + String.format("%.2f", actualPrice));
         }
     }
 
-    /**
-     * Add regular toppings to a sandwich
-     * @param sandwich The sandwich to add toppings to
-     */
     private static void addRegularToppingsToSandwich(Sandwich sandwich) {
         System.out.println("\nSelect other toppings (enter 0 to finish):");
         RegularToppingType[] toppings = RegularToppingType.values();
 
         while (true) {
-            for (int i = 0; i < toppings.length; i++) {
-                System.out.println((i + 1) + ") " + toppings[i].getDisplayName() + " (FREE)");
-            }
+            // Use stream to display topping options
+            Arrays.stream(toppings)
+                    .forEach(topping -> {
+                        int index = Arrays.asList(toppings).indexOf(topping) + 1;
+                        System.out.println(index + ") " + topping.getDisplayName() + " (FREE)");
+                    });
             System.out.println("0) Done with toppings");
 
             int choice = getValidMenuChoice(0, toppings.length, "Enter choice: ") - 1;
             if (choice == -1) break;
 
-            sandwich.addRegularTopping(toppings[choice]);
-            System.out.println("Added " + toppings[choice].getDisplayName() + " (FREE)");
+            // Use stream to get selected topping safely
+            RegularToppingType selectedTopping = Arrays.stream(toppings)
+                    .skip(choice)
+                    .findFirst()
+                    .orElse(RegularToppingType.LETTUCE); // Safe fallback to first enum value
+
+            sandwich.addRegularTopping(selectedTopping);
+            System.out.println("Added " + selectedTopping.getDisplayName() + " (FREE)");
         }
     }
 
-    /**
-     * Add sauces to a sandwich
-     * @param sandwich The sandwich to add sauces to
-     */
     private static void addSaucesToSandwich(Sandwich sandwich) {
         System.out.println("\nSelect sauces (enter 0 to finish):");
         SauceType[] sauces = SauceType.values();
 
         while (true) {
-            for (int i = 0; i < sauces.length; i++) {
-                System.out.println((i + 1) + ") " + sauces[i].getDisplayName() + " (FREE)");
-            }
+            // Use stream to display sauce options
+            Arrays.stream(sauces)
+                    .forEach(sauce -> {
+                        int index = Arrays.asList(sauces).indexOf(sauce) + 1;
+                        System.out.println(index + ") " + sauce.getDisplayName() + " (FREE)");
+                    });
             System.out.println("0) Done with sauces");
 
             int choice = getValidMenuChoice(0, sauces.length, "Enter choice: ") - 1;
             if (choice == -1) break;
 
-            sandwich.addSauce(sauces[choice]);
-            System.out.println("Added " + sauces[choice].getDisplayName() + " (FREE)");
+            // Use stream to get selected sauce safely
+            SauceType selectedSauce = Arrays.stream(sauces)
+                    .skip(choice)
+                    .findFirst()
+                    .orElse(SauceType.MAYO); // Safe fallback to first enum value
+
+            sandwich.addSauce(selectedSauce);
+            System.out.println("Added " + selectedSauce.getDisplayName() + " (FREE)");
         }
     }
 
-    /**
-     * Add sides to a sandwich
-     * @param sandwich The sandwich to add sides to
-     */
     private static void addSidesToSandwich(Sandwich sandwich) {
         System.out.println("\nSelect sides (enter 0 to finish):");
         SideType[] sides = SideType.values();
 
         while (true) {
-            for (int i = 0; i < sides.length; i++) {
-                System.out.println((i + 1) + ") " + sides[i].getDisplayName() + " (FREE)");
-            }
+            // Use stream to display side options
+            Arrays.stream(sides)
+                    .forEach(side -> {
+                        int index = Arrays.asList(sides).indexOf(side) + 1;
+                        System.out.println(index + ") " + side.getDisplayName() + " (FREE)");
+                    });
             System.out.println("0) Done with sides");
 
             int choice = getValidMenuChoice(0, sides.length, "Enter choice: ") - 1;
             if (choice == -1) break;
 
-            sandwich.addSide(sides[choice]);
-            System.out.println("Added " + sides[choice].getDisplayName() + " (FREE)");
+            // Use stream to get selected side safely
+            SideType selectedSide = Arrays.stream(sides)
+                    .skip(choice)
+                    .findFirst()
+                    .orElse(SideType.COLESLAW); // Safe fallback to first enum value
+
+            sandwich.addSide(selectedSide);
+            System.out.println("Added " + selectedSide.getDisplayName() + " (FREE)");
         }
     }
 
-    /**
-     * Guide the user through selecting a drink
-     * @return A configured Drink object
-     */
-    // Guide the user through selecting a drink
     public static Drink buildDrink() {
         System.out.println("\n========== Add Drink ==========");
 
-        // Select drink size
         System.out.println("Select drink size:");
         DrinkSize[] sizes = DrinkSize.values();
-        for (int i = 0; i < sizes.length; i++) {
-            System.out.println((i + 1) + ") " + sizes[i].getDisplayName() +
-                    " - $" + String.format("%.2f", PriceCalculator.getDrinkPrice(sizes[i])));
-        }
+
+        // Use stream to display drink sizes with prices
+        Arrays.stream(sizes)
+                .forEach(size -> {
+                    int index = Arrays.asList(sizes).indexOf(size) + 1;
+                    System.out.println(index + ") " + size.getDisplayName() +
+                            " - $" + String.format("%.2f", PriceCalculator.getDrinkPrice(size)));
+                });
+
         int sizeChoice = getValidMenuChoice(1, sizes.length, "Enter choice: ") - 1;
 
-        // Define available drink flavors
         String[] drinkFlavors = {
-                "Cola",
-                "Sprite",
-                "Orange",
-                "Water",
-                "Coffee",
-                "Tea",
-                "Lemonade",
-                "Root Beer",
-                "Other (Custom)"
+                "Cola", "Sprite", "Orange", "Water", "Coffee",
+                "Tea", "Lemonade", "Root Beer", "Other (Custom)"
         };
 
-        // Display flavor options
         System.out.println("\nSelect drink flavor:");
-        for (int i = 0; i < drinkFlavors.length; i++) {
-            System.out.println((i + 1) + ") " + drinkFlavors[i]);
-        }
+
+        // Use stream to display flavor options
+        Arrays.stream(drinkFlavors)
+                .forEach(flavor -> {
+                    int index = Arrays.asList(drinkFlavors).indexOf(flavor) + 1;
+                    System.out.println(index + ") " + flavor);
+                });
 
         int flavorChoice = getValidMenuChoice(1, drinkFlavors.length, "Enter choice: ") - 1;
-        String flavor;
 
-        // Handle custom flavor
-        if (flavorChoice == drinkFlavors.length - 1) { // "Other (Custom)" option
-            flavor = getStringInput("Enter custom drink flavor: ");
-        } else {
-            flavor = drinkFlavors[flavorChoice];
-        }
+        // Use ternary operator with stream operations
+        String flavor = (flavorChoice == drinkFlavors.length - 1)
+                ? getStringInput("Enter custom drink flavor: ")
+                : Arrays.stream(drinkFlavors)
+                .skip(flavorChoice)
+                .findFirst()
+                .orElse("Cola");
 
-        System.out.println("Selected: " + sizes[sizeChoice].getDisplayName() + " " + flavor);
-        System.out.println("Price: $" + String.format("%.2f", PriceCalculator.getDrinkPrice(sizes[sizeChoice])));
-        return new Drink(sizes[sizeChoice], flavor);
+        DrinkSize selectedSize = Arrays.stream(sizes)
+                .skip(sizeChoice)
+                .findFirst()
+                .orElse(DrinkSize.SMALL);
+
+        System.out.println("Selected: " + selectedSize.getDisplayName() + " " + flavor);
+        System.out.println("Price: $" + String.format("%.2f", PriceCalculator.getDrinkPrice(selectedSize)));
+
+        return new Drink(selectedSize, flavor);
     }
 
-    // Guide the user through selecting chips
     public static Chips buildChips() {
         System.out.println("\n========== Add Chips ==========");
 
-        // Define available chip varieties
         String[] chipVarieties = {
-                "Classic",
-                "BBQ",
-                "Sour Cream & Onion",
-                "Salt & Vinegar",
-                "Cheddar",
-                "Jalapeño",
-                "Honey Mustard",
-                "Other (Custom)"
+                "Classic", "BBQ", "Sour Cream & Onion", "Salt & Vinegar",
+                "Cheddar", "Jalapeño", "Honey Mustard", "Other (Custom)"
         };
 
-        // Display chip options
         System.out.println("Select chip variety:");
-        for (int i = 0; i < chipVarieties.length; i++) {
-            System.out.println((i + 1) + ") " + chipVarieties[i]);
-        }
+
+        // Use stream to display an array of objects as menu options
+        Arrays.stream(chipVarieties)
+                .forEach(variety -> {
+                    int index = Arrays.asList(chipVarieties).indexOf(variety) + 1;
+                    System.out.println(index + ") " + variety);
+                });
 
         int chipChoice = getValidMenuChoice(1, chipVarieties.length, "Enter choice: ") - 1;
-        String chipType;
 
-        // Handle custom chip type
-        if (chipChoice == chipVarieties.length - 1) { // "Other (Custom)" option
-            chipType = getStringInput("Enter custom chip type: ");
-        } else {
-            chipType = chipVarieties[chipChoice];
-        }
+        // Use ternary operator and stream operations
+        String chipType = (chipChoice == chipVarieties.length - 1)
+                ? getStringInput("Enter custom chip type: ")
+                : Arrays.stream(chipVarieties)
+                .skip(chipChoice)
+                .findFirst()
+                .orElse("Classic");
 
         System.out.println("Selected: " + chipType);
         System.out.println("Price: $" + String.format("%.2f", PriceCalculator.getChipsPrice()));
         return new Chips(chipType);
     }
 
-    /**
-     * Display a complete order summary
-     * @param order The order to display
-     */
     public static void displayOrderSummary(Order order) {
         System.out.println("\n========== Order Summary ==========");
 
@@ -290,104 +328,91 @@ public class OrderScreen {
             return;
         }
 
-        // Display sandwiches
-        for (int i = 0; i < order.getSandwiches().size(); i++) {
-            Sandwich sandwich = order.getSandwiches().get(i);
-            System.out.println("\nSandwich #" + (i + 1) + ":");
-            System.out.println("  Size: " + sandwich.getSize().getDisplayName());
-            System.out.println("  Bread: " + sandwich.getBreadType().getDisplayName());
+        // Display sandwiches using stream with index
+        order.getSandwiches().stream()
+                .forEach(sandwich -> {
+                    int index = order.getSandwiches().indexOf(sandwich) + 1;
+                    System.out.println("\nSandwich #" + index + ":");
+                    System.out.println("  Size: " + sandwich.getSize().getDisplayName());
+                    System.out.println("  Bread: " + sandwich.getBreadType().getDisplayName());
 
-            if (!sandwich.getMeats().isEmpty()) {
-                System.out.print("  Meats: ");
-                for (int j = 0; j < sandwich.getMeats().size(); j++) {
-                    Meat meat = sandwich.getMeats().get(j);
-                    System.out.print(meat.getName());
-                    if (meat.isExtra()) System.out.print(" (Extra)");
-                    if (j < sandwich.getMeats().size() - 1) System.out.print(", ");
-                }
-                System.out.println();
-            }
+                    // Display meats with stream
+                    if (!sandwich.getMeats().isEmpty()) {
+                        String meats = sandwich.getMeats().stream()
+                                .map(meat -> meat.getName() + (meat.isExtra() ? " (Extra)" : ""))
+                                .reduce((a, b) -> a + ", " + b)
+                                .orElse("");
+                        System.out.println("  Meats: " + meats);
+                    }
 
-            if (!sandwich.getCheeses().isEmpty()) {
-                System.out.print("  Cheeses: ");
-                for (int j = 0; j < sandwich.getCheeses().size(); j++) {
-                    Cheese cheese = sandwich.getCheeses().get(j);
-                    System.out.print(cheese.getName());
-                    if (cheese.isExtra()) System.out.print(" (Extra)");
-                    if (j < sandwich.getCheeses().size() - 1) System.out.print(", ");
-                }
-                System.out.println();
-            }
+                    // Display cheeses with stream
+                    if (!sandwich.getCheeses().isEmpty()) {
+                        String cheeses = sandwich.getCheeses().stream()
+                                .map(cheese -> cheese.getName() + (cheese.isExtra() ? " (Extra)" : ""))
+                                .reduce((a, b) -> a + ", " + b)
+                                .orElse("");
+                        System.out.println("  Cheeses: " + cheeses);
+                    }
 
-            if (!sandwich.getRegularToppings().isEmpty()) {
-                System.out.print("  Toppings: ");
-                for (int j = 0; j < sandwich.getRegularToppings().size(); j++) {
-                    RegularTopping topping = sandwich.getRegularToppings().get(j);
-                    System.out.print(topping.getName());
-                    if (j < sandwich.getRegularToppings().size() - 1) System.out.print(", ");
-                }
-                System.out.println();
-            }
+                    // Display regular toppings with stream
+                    if (!sandwich.getRegularToppings().isEmpty()) {
+                        String toppings = sandwich.getRegularToppings().stream()
+                                .map(RegularTopping::getName)
+                                .reduce((a, b) -> a + ", " + b)
+                                .orElse("");
+                        System.out.println("  Toppings: " + toppings);
+                    }
 
-            if (!sandwich.getSauces().isEmpty()) {
-                System.out.print("  Sauces: ");
-                for (int j = 0; j < sandwich.getSauces().size(); j++) {
-                    Sauce sauce = sandwich.getSauces().get(j);
-                    System.out.print(sauce.getName());
-                    if (j < sandwich.getSauces().size() - 1) System.out.print(", ");
-                }
-                System.out.println();
-            }
+                    // Display sauces with stream
+                    if (!sandwich.getSauces().isEmpty()) {
+                        String sauces = sandwich.getSauces().stream()
+                                .map(Sauce::getName)
+                                .reduce((a, b) -> a + ", " + b)
+                                .orElse("");
+                        System.out.println("  Sauces: " + sauces);
+                    }
 
-            if (!sandwich.getSides().isEmpty()) {
-                System.out.print("  Sides: ");
-                for (int j = 0; j < sandwich.getSides().size(); j++) {
-                    Side side = sandwich.getSides().get(j);
-                    System.out.print(side.getName());
-                    if (j < sandwich.getSides().size() - 1) System.out.print(", ");
-                }
-                System.out.println();
-            }
+                    // Display sides with stream
+                    if (!sandwich.getSides().isEmpty()) {
+                        String sides = sandwich.getSides().stream()
+                                .map(Side::getName)
+                                .reduce((a, b) -> a + ", " + b)
+                                .orElse("");
+                        System.out.println("  Sides: " + sides);
+                    }
 
-            if (sandwich.isToasted()) {
-                System.out.println("  Toasted: Yes");
-            }
+                    if (sandwich.isToasted()) {
+                        System.out.println("  Toasted: Yes");
+                    }
 
-            System.out.println("  Price: $" + String.format("%.2f", sandwich.calculatePrice()));
-        }
+                    System.out.println("  Price: $" + String.format("%.2f", sandwich.calculatePrice()));
+                });
 
-        // Display drinks
-        for (Drink drink : order.getDrinks()) {
-            System.out.println("\nDrink: " + drink.getSize().getDisplayName() + " " + drink.getFlavor());
-            System.out.println("  Price: $" + String.format("%.2f", drink.calculatePrice()));
-        }
+        // Display drinks with stream
+        order.getDrinks().stream()
+                .forEach(drink -> {
+                    System.out.println("\nDrink: " + drink.getSize().getDisplayName() + " " + drink.getFlavor());
+                    System.out.println("  Price: $" + String.format("%.2f", drink.calculatePrice()));
+                });
 
-        // Display chips
-        for (Chips chip : order.getChips()) {
-            System.out.println("\nChips: " + chip.getChipType());
-            System.out.println("  Price: $" + String.format("%.2f", chip.calculatePrice()));
-        }
+        // Display chips with stream
+        order.getChips().stream()
+                .forEach(chip -> {
+                    System.out.println("\nChips: " + chip.getChipType());
+                    System.out.println("  Price: $" + String.format("%.2f", chip.calculatePrice()));
+                });
 
         System.out.println("\n" + "=".repeat(35));
         System.out.println("Total: $" + String.format("%.2f", order.calculateTotal()));
         System.out.println("=".repeat(35));
     }
 
-    /**
-     * Display checkout options and get user choice with validation
-     * @return The user's checkout choice
-     */
     public static int getCheckoutChoice() {
         System.out.println("\n1) Confirm Order");
         System.out.println("0) Cancel Order");
         return getValidMenuChoice(0, 1, "Enter your choice: ");
     }
 
-    /**
-     * Get string input from user with validation
-     * @param prompt The prompt message to display
-     * @return Non-empty trimmed string input
-     */
     private static String getStringInput(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -401,10 +426,6 @@ public class OrderScreen {
         }
     }
 
-    /**
-     * Get integer input from user with error handling and validation
-     * @return The integer input
-     */
     private static int getIntInput() {
         while (true) {
             try {
@@ -420,11 +441,6 @@ public class OrderScreen {
         }
     }
 
-    /**
-     * Get boolean input from user with validation and case-insensitive checking
-     * @param prompt The prompt message to display
-     * @return True for yes responses, false for no responses
-     */
     private static boolean getBooleanInput(String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -435,7 +451,6 @@ public class OrderScreen {
                 continue;
             }
 
-            // Accept various forms of yes/no responses
             if (input.equals("y") || input.equals("yes") || input.equals("true") || input.equals("1")) {
                 return true;
             } else if (input.equals("n") || input.equals("no") || input.equals("false") || input.equals("0")) {
@@ -446,13 +461,6 @@ public class OrderScreen {
         }
     }
 
-    /**
-     * Get valid menu choice with range validation
-     * @param min Minimum valid choice
-     * @param max Maximum valid choice
-     * @param prompt The prompt message
-     * @return Valid menu choice within range
-     */
     private static int getValidMenuChoice(int min, int max, String prompt) {
         while (true) {
             System.out.print(prompt);
@@ -466,10 +474,6 @@ public class OrderScreen {
         }
     }
 
-    /**
-     * Display a message to the user
-     * @param message The message to display
-     */
     public static void displayMessage(String message) {
         System.out.println(message);
     }

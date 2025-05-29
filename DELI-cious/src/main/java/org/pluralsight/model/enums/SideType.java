@@ -4,7 +4,7 @@ package org.pluralsight.model.enums;
  * Enum representing the available side types
  */
 public enum SideType {
-    AU_JUS("Au Jus"),
+    COLESLAW("Coleslaw"),
     SAUCE("Sauce");
 
     private final String displayName;
