@@ -14,6 +14,7 @@ import java.util.Arrays;
 import static org.pluralsight.ui.HomeScreen.scanner;
 
 public class BuildOrder {
+    // Build Sandwich Order
     public static Sandwich buildSandwich() {
         System.out.println("\n========== Add Sandwich ==========");
 
@@ -61,14 +62,14 @@ public class BuildOrder {
                     });
             System.out.println("0) Done with meats");
 
-            int choice = getValidMenuChoice(0, meats.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+            int userChoice = getValidMenuChoice(0, meats.length, "Enter choice: ") - 1;
+            if (userChoice == -1) break;
 
             boolean isExtra = getBooleanInput("Extra meat? (y/n): ");
 
             // Use stream to get selected meat safely
             MeatType selectedMeat = Arrays.stream(meats)
-                    .skip(choice)
+                    .skip(userChoice)
                     .findFirst()
                     .orElse(MeatType.TURKEY); // Safe fallback to first enum value
 
@@ -95,14 +96,14 @@ public class BuildOrder {
                     });
             System.out.println("0) Done with cheeses");
 
-            int choice = getValidMenuChoice(0, cheeses.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+            int userChoice = getValidMenuChoice(0, cheeses.length, "Enter choice: ") - 1;
+            if (userChoice == -1) break;
 
             boolean isExtra = getBooleanInput("Extra cheese? (y/n): ");
 
             // Use stream to get selected cheese safely
             CheeseType selectedCheese = Arrays.stream(cheeses)
-                    .skip(choice)
+                    .skip(userChoice)
                     .findFirst()
                     .orElse(CheeseType.AMERICAN); // Safe fallback to first enum value
 
@@ -126,12 +127,12 @@ public class BuildOrder {
                     });
             System.out.println("0) Done with toppings");
 
-            int choice = getValidMenuChoice(0, toppings.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+            int userChoice = getValidMenuChoice(0, toppings.length, "Enter choice: ") - 1;
+            if (userChoice == -1) break;
 
             // Use stream to get selected topping safely
             RegularToppingType selectedTopping = Arrays.stream(toppings)
-                    .skip(choice)
+                    .skip(userChoice)
                     .findFirst()
                     .orElse(RegularToppingType.LETTUCE); // Safe fallback to first enum value
 
@@ -153,12 +154,12 @@ public class BuildOrder {
                     });
             System.out.println("0) Done with sauces");
 
-            int choice = getValidMenuChoice(0, sauces.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+            int userChoice = getValidMenuChoice(0, sauces.length, "Enter choice: ") - 1;
+            if (userChoice == -1) break;
 
             // Use stream to get selected sauce safely
             SauceType selectedSauce = Arrays.stream(sauces)
-                    .skip(choice)
+                    .skip(userChoice)
                     .findFirst()
                     .orElse(SauceType.MAYO); // Safe fallback to first enum value
 
@@ -180,12 +181,12 @@ public class BuildOrder {
                     });
             System.out.println("0) Done with sides");
 
-            int choice = getValidMenuChoice(0, sides.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+            int userChoice = getValidMenuChoice(0, sides.length, "Enter choice: ") - 1;
+            if (userChoice == -1) break;
 
             // Use stream to get selected side safely
             SideType selectedSide = Arrays.stream(sides)
-                    .skip(choice)
+                    .skip(userChoice)
                     .findFirst()
                     .orElse(SideType.COLESLAW); // Safe fallback to first enum value
 
@@ -194,6 +195,7 @@ public class BuildOrder {
         }
     }
 
+    // Build Drink Order
     public static Drink buildDrink() {
         System.out.println("\n========== Add Drink ==========");
 
@@ -208,7 +210,7 @@ public class BuildOrder {
                             " - $" + String.format("%.2f", PriceCalculator.getDrinkPrice(size)));
                 });
 
-        int sizeChoice = getValidMenuChoice(1, sizes.length, "Enter choice: ") - 1;
+        int userSizeChoice = getValidMenuChoice(1, sizes.length, "Enter choice: ") - 1;
 
         String[] drinkFlavors = {
                 "Cola", "Sprite", "Orange", "Water", "Coffee",
@@ -224,18 +226,18 @@ public class BuildOrder {
                     System.out.println(index + ") " + flavor);
                 });
 
-        int flavorChoice = getValidMenuChoice(1, drinkFlavors.length, "Enter choice: ") - 1;
+        int userFlavorChoice = getValidMenuChoice(1, drinkFlavors.length, "Enter choice: ") - 1;
 
         // Use ternary operator with stream operations
-        String flavor = (flavorChoice == drinkFlavors.length - 1)
+        String flavor = (userFlavorChoice == drinkFlavors.length - 1)
                 ? getStringInput("Enter custom drink flavor: ")
                 : Arrays.stream(drinkFlavors)
-                .skip(flavorChoice)
+                .skip(userFlavorChoice)
                 .findFirst()
                 .orElse("Cola");
 
         DrinkSize selectedSize = Arrays.stream(sizes)
-                .skip(sizeChoice)
+                .skip(userSizeChoice)
                 .findFirst()
                 .orElse(DrinkSize.SMALL);
 
@@ -245,6 +247,7 @@ public class BuildOrder {
         return new Drink(selectedSize, flavor);
     }
 
+    // Build Chips Order
     public static Chips buildChips() {
         System.out.println("\n========== Add Chips ==========");
 
@@ -262,13 +265,13 @@ public class BuildOrder {
                     System.out.println(index + ") " + variety);
                 });
 
-        int chipChoice = getValidMenuChoice(1, chipVarieties.length, "Enter choice: ") - 1;
+        int userChipChoice = getValidMenuChoice(1, chipVarieties.length, "Enter choice: ") - 1;
 
         // Use ternary operator and stream operations
-        String chipType = (chipChoice == chipVarieties.length - 1)
+        String chipType = (userChipChoice == chipVarieties.length - 1)
                 ? getStringInput("Enter custom chip type: ")
                 : Arrays.stream(chipVarieties)
-                .skip(chipChoice)
+                .skip(userChipChoice)
                 .findFirst()
                 .orElse("Classic");
 
@@ -380,12 +383,12 @@ public class BuildOrder {
     private static int getIntInput() {
         while (true) {
             try {
-                String input = scanner.nextLine().trim();
-                if (input.isEmpty()) {
+                String userInput = scanner.nextLine().trim();
+                if (userInput.isEmpty()) {
                     System.out.print("Please enter a valid number: ");
                     continue;
                 }
-                return Integer.parseInt(input);
+                return Integer.parseInt(userInput);
             } catch (NumberFormatException e) {
                 System.out.print("Invalid input. Please enter a valid number: ");
             }
@@ -395,16 +398,16 @@ public class BuildOrder {
     private static boolean getBooleanInput(String prompt) {
         while (true) {
             System.out.print(prompt);
-            String input = scanner.nextLine().trim().toLowerCase();
+            String userInput = scanner.nextLine().trim().toLowerCase();
 
-            if (input.isEmpty()) {
+            if (userInput.isEmpty()) {
                 System.out.println("Please enter a valid response (y/n, yes/no).");
                 continue;
             }
 
-            if (input.equals("y") || input.equals("yes") || input.equals("true") || input.equals("1")) {
+            if (userInput.equals("y") || userInput.equals("yes") || userInput.equals("true") || userInput.equals("1")) {
                 return true;
-            } else if (input.equals("n") || input.equals("no") || input.equals("false") || input.equals("0")) {
+            } else if (userInput.equals("n") || userInput.equals("no") || userInput.equals("false") || userInput.equals("0")) {
                 return false;
             } else {
                 System.out.println("Invalid response. Please enter 'y' for yes or 'n' for no.");
@@ -415,10 +418,10 @@ public class BuildOrder {
     private static int getValidMenuChoice(int min, int max, String prompt) {
         while (true) {
             System.out.print(prompt);
-            int choice = getIntInput();
+            int userChoice = getIntInput();
 
-            if (choice >= min && choice <= max) {
-                return choice;
+            if (userChoice >= min && userChoice <= max) {
+                return userChoice;
             } else {
                 System.out.printf("Invalid choice. Please enter a number between %d and %d: ", min, max);
             }
