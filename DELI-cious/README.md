@@ -97,9 +97,9 @@ Displays the full receipt from receipts history.
 ### 📌 Highlighted Snippet: Safe Enum Selection Using Java Streams
 ```java
 MeatType selectedMeat = Arrays.stream(meats)
-    .skip(choice)
-    .findFirst()
-    .orElse(MeatType.TURKEY); // Safe fallback to the first enum value
+        .skip(userChoice) // 1-6 Meat options
+        .findFirst()
+        .orElse(MeatType.TURKEY); // Safe fallback to the first enum value
 ```
 ### 🔍 What’s Interesting?
 This snippet appears inside the addMeatsToSandwich() method in BuildOrder. It takes user input and selects a meat from the MeatType enum list using modern stream operations, while also guarding against invalid selections.

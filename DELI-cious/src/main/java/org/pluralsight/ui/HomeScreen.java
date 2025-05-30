@@ -46,16 +46,26 @@ public class HomeScreen {
             }
         }
     }
+    // Display welcome message
+    public static void displayWelcome() {
+        System.out.println();
+        System.out.println("\n" + "=".repeat(40));
+        System.out.println("         Welcome to DELI-cious!");
+        System.out.println("       Your Custom Sandwich Shop");
+        System.out.println("=".repeat(40));
+
+    }
 
     // Display the main menu and get user choice with validation
     public static int getMainMenuChoice() {
-        System.out.println("\n=== HOME ===");
+        System.out.println("===== HOME =====");
         System.out.println("1. View Menu");
         System.out.println("2. New Order");
         System.out.println("3. Order History");
         System.out.println("0. Exit");
         return getValidMenuChoice(0, 3, "Choose an option: ");
     }
+
 
     // Display all available menu items with prices
     public static void displayMenuItems() {
@@ -83,7 +93,7 @@ public class HomeScreen {
         System.out.println("Meats:");
         MeatType[] meats = MeatType.values();
         for (MeatType meat : meats) {
-            System.out.printf("  • %-12s - 4\": $%.2f, 8\": $%.2f, 12\": $%.2f%n",
+            System.out.printf("  • %-12s - 4\": $%.2f  |  8\": $%.2f  |  12\": $%.2f%n",
                     meat.getDisplayName(),
                     PriceCalculator.getMeatPrice(SandwichSize.FOUR_INCH, false),
                     PriceCalculator.getMeatPrice(SandwichSize.EIGHT_INCH, false),
@@ -93,7 +103,7 @@ public class HomeScreen {
         System.out.println("\nCheeses:");
         CheeseType[] cheeses = CheeseType.values();
         for (CheeseType cheese : cheeses) {
-            System.out.printf("  • %-12s - 4\": $%.2f, 8\": $%.2f, 12\": $%.2f%n",
+            System.out.printf("  • %-12s - 4\": $%.2f  |   8\": $%.2f  |  12\": $%.2f%n",
                     cheese.getDisplayName(),
                     PriceCalculator.getCheesePrice(SandwichSize.FOUR_INCH, false),
                     PriceCalculator.getCheesePrice(SandwichSize.EIGHT_INCH, false),
@@ -101,11 +111,11 @@ public class HomeScreen {
         }
 
         System.out.println("\nExtra Portions Available:");
-        System.out.printf("  • Extra Meat   - 4\": $%.2f, 8\": $%.2f, 12\": $%.2f%n",
+        System.out.printf("  • Extra Meat   - 4\": $%.2f  |   8\": $%.2f  |  12\": $%.2f%n",
                 PriceCalculator.getMeatPrice(SandwichSize.FOUR_INCH, true),
                 PriceCalculator.getMeatPrice(SandwichSize.EIGHT_INCH, true),
                 PriceCalculator.getMeatPrice(SandwichSize.TWELVE_INCH, true));
-        System.out.printf("  • Extra Cheese - 4\": $%.2f, 8\": $%.2f, 12\": $%.2f%n",
+        System.out.printf("  • Extra Cheese - 4\": $%.2f  |   8\": $%.2f  |  12\": $%.2f%n",
                 PriceCalculator.getCheesePrice(SandwichSize.FOUR_INCH, true),
                 PriceCalculator.getCheesePrice(SandwichSize.EIGHT_INCH, true),
                 PriceCalculator.getCheesePrice(SandwichSize.TWELVE_INCH, true));
@@ -145,9 +155,9 @@ public class HomeScreen {
         System.out.printf("  • All varieties - $%.2f%n", PriceCalculator.getChipsPrice());
         System.out.println("  Available types: Classic, BBQ, Sour Cream & Onion, Salt & Vinegar, etc.");
 
-        System.out.println("\n" + "=".repeat(40));
+        System.out.println("\n" + "=".repeat(45));
         System.out.println("All sandwiches can be toasted upon request!");
-        System.out.println("=".repeat(40));
+        System.out.println("=".repeat(45) + "\n");
     }
 
     /**
@@ -308,11 +318,4 @@ public class HomeScreen {
         System.out.println(message);
     }
 
-    // Display welcome message
-    public static void displayWelcome() {
-        System.out.println("\n" + "=".repeat(40));
-        System.out.println("         Welcome to DELI-cious!");
-        System.out.println("       Your Custom Sandwich Shop");
-        System.out.println("=".repeat(40));
-    }
 }
