@@ -13,7 +13,6 @@ import org.pluralsight.ui.HomeScreen;
 public class Main {
     /**
      * Main method - entry point of the application
-     * @param args Command line arguments (not used)
      */
     public static void main(String[] args) {
         try {

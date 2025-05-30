@@ -17,42 +17,133 @@ DELI-cious was designed to modernize the order process at a growing sandwich sho
 
 ## 💡 Technologies Used
 
-- Language: Java (or specify your language)
+- Language: Java
 - Object-Oriented Programming (OOP)
 - File I/O (for receipt generation)
 - Console-based UI
 - UML Design and Class Diagrams
 
+## 📷 Screenshots
+### 🏠 Home Screen
+Main menu with options to View Menu, New Order, Order History, or Exit.
+![Home Screen](screenshots/Home%20Screen.png)
+---
+
+### 📒 View Menu
+Available menu items
+
+![View Menu](screenshots/Menu%20Screen.png)
+---
+
+### 🧾 Order Screen
+Displays options to build your order.
+
+![New Order Screen](screenshots/New%20Order%20Screen.png)
+---
+
+### 🥪 Add Sandwich
+Guides the user through sandwich customization.
+
+- **Select your bread**
+- **Sandwich size**
+- **Toppings** (allows extras):
+    - 🥩 Meat
+    - 🧀 Cheese
+    - 🥗 Other toppings
+    - 🥫 Sauces
+- **Toasted?** — Option to toast the sandwich
+
+![Add Sandwich Screen](screenshots/Add%20Sandwich%20Screen.png)
+
+---
+
+### 🥤 Add Drink
+Select drink **size** and **flavor**.
+
+![Add Drink Screen](screenshots/Add%20Drink%20Screen.png)
+
+---
+
+### 🍟 Add Chips
+Choose your **chip type**.
+
+![Add Chips Screen](screenshots/Add%20Chips%20Screen.png)
+
+---
+
+### 💳 Checkout
+Displays the full **order details** and **total price**.
+
+- ✅ `Confirm` — Generates receipt and returns to Home Screen
+- ❌ `Cancel` — Discards order and returns to Home Screen
+
+![Add Checkout Screen](screenshots/Checkout%20Screen.png)
+
+---
+
+### 🧾 Order History
+Displays all the history of confirmed orders from a receipts folder. Newer entries first
+
+![Order History Screen](screenshots/Order%20History%20Screen.png)
+
+---
+
+### 🧾 Full Receipt Screen
+Displays the full receipt from receipts history.
+
+![Full Receipt Screen](screenshots/Full%20Receipts%20Screen.png)
+
+
 ## 📁 Folder Structure
 ```plaintext
 DELI-cious/
 ├── src/
-├───── main/
+│   └── main/
 │       └── java/
 │           └── org/
 │               └── pluralsight/
-│                      ├── main
-│                      │    └── Main.java
-│                      ├── ui/
-│                      │    ├── HomeScreen.java
-│                      │    └── OrderScreen.java
-│                      ├── model/
-│                      │    ├── Sandwich.java
-│                      │    ├── Topping.java
-│                      │    ├── Drink.java
-│                      │    ├── Chip.java
-│                      │    └── Order.java
-│                      └── util/
-│                           └── ReceiptWriter.java
+│                   ├── main/
+│                   │   └── Main.java 
+│                   ├── model/
+│                   │   ├── enums/
+│                   │   │   ├── BreadType.java
+│                   │   │   ├── CheeseType.java
+│                   │   │   ├── DrinkSize.java
+│                   │   │   ├── MeatType.java
+│                   │   │   ├── RegularToppingType.java
+│                   │   │   ├── SandwichSize.java
+│                   │   │   ├── SauceType.java
+│                   │   │   └── SideType.java
+│                   │   ├── interfaces/
+│                   │   │   └── Priceable.java
+│                   │   ├── products/
+│                   │   │   ├── AbstractMenuItem.java
+│                   │   │   ├── Order.java
+│                   │   │   ├── Sandwich.java
+│                   │   │   ├── Drink.java
+│                   │   │   └── Chips.java
+│                   │   └── toppings/
+│                   │   │   ├── Cheese.java
+│                   │   │   ├── Meat.java
+│                   │   │   ├── RegularTopping.java
+│                   │   │   ├── Sauce.java
+│                   │   │   ├── Side.java
+│                   │   │   └── Topping.java
+│                   ├── service/
+│                   │   ├── BuildOrder.java
+│                   │   ├── PriceCalculator.java
+│                   │   └── ReceiptGenerator.java
+│                   └── ui/
+│                       ├── HomeScreen.java
+│                       └── OrderScreen.java
 ├── receipts/
+├── docs/
+│   └── diagrams/
 ├── .gitignore
-├── README.md
+├── README.md  
 ├── pom.xml
 └── LICENSE
 ```
-
-## 📷 Screenshots
-Coming soon: Include screenshots of each screen (Home, Add Sandwich, Checkout, etc.) once development progresses.
 
 ## ✅ Capstone Goals
 - Practice OOP design and development

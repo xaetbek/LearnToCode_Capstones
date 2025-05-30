@@ -1,0 +1,15 @@
+DELI-cious Receipt
+====================
+Date: 2025-05-30 05:17:52
+
+Drink #1: Small Cola
+- Price: $2.00
+
+Chips #1: BBQ
+- Price: $1.50
+
+==================
+TOTAL: $3.50
+==================
+Thank you for your business!
+
