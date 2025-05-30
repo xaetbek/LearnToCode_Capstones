@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * Handles the main menu screen and related functionality
  */
 public class HomeScreen {
-    private static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     // Start the DELI-cious POS application
     public void start() {

@@ -1,6 +1,5 @@
 package org.pluralsight.main;
 
-import org.pluralsight.service.OrderManager;
 import org.pluralsight.ui.HomeScreen;
 
 /**

@@ -8,7 +8,7 @@ public interface iPriceable {
     // Method to get display name for the item
     String getDisplayName();
 
-    // Default method for formatted price (Java 8+ feature)
+    // Default method for formatted price
     default String getFormattedPrice() {
         return String.format("$%.2f", calculatePrice());
     }

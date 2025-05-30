@@ -1,0 +1,12 @@
+DELI-cious Receipt
+====================
+Date: 2025-05-29 15:43:08
+
+Drink #1: Medium Sprite
+- Price: $2.50
+
+==================
+TOTAL: $2.50
+==================
+Thank you for your business!
+

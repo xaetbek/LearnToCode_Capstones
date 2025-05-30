@@ -1,0 +1,26 @@
+DELI-cious Receipt
+====================
+Date: 2025-05-29 15:05:35
+
+Sandwich #1:
+- Size: 4"
+- Bread: White
+- Meats: Steak, Turkey (Extra)
+- Cheeses: American
+- Toppings: Peppers
+- Sauces: Ketchup
+- Sides: Coleslaw, Coleslaw
+- Toasted: Yes
+- Price: $8.75
+
+Drink #1: Small Sprite
+- Price: $2.00
+
+Chips #1: Sour Cream & Onion
+- Price: $1.50
+
+==================
+TOTAL: $12.25
+==================
+Thank you for your business!
+

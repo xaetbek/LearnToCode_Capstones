@@ -2,9 +2,7 @@ package org.pluralsight.model.products;
 
 import org.pluralsight.service.PriceCalculator;
 
-/**
- * Represents a bag of chips
- */
+// Represents a bag of chips
 public class Chips extends AbstractMenuItem{
     private String chipType;
 
@@ -13,10 +11,7 @@ public class Chips extends AbstractMenuItem{
         this.chipType = chipType;
     }
 
-    /**
-     * Calculate the price of the chips
-     * @return The price of the chips (fixed price)
-     */
+    // Calculate the price of the chips
     public double calculatePrice() {
         return PriceCalculator.getChipsPrice();
     }

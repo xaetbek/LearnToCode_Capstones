@@ -3,16 +3,13 @@ package org.pluralsight.ui;
 import org.pluralsight.model.enums.*;
 import org.pluralsight.model.products.*;
 import org.pluralsight.model.toppings.*;
-import org.pluralsight.service.OrderManager;
-import org.pluralsight.service.PriceCalculator;
-
+import org.pluralsight.service.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class OrderScreen {
     private static Scanner scanner = new Scanner(System.in);
     private static Order currentOrder;
-
 
     // Start a new order process
     public static void startNewOrder() {
@@ -22,14 +19,14 @@ public class OrderScreen {
         HomeScreen.displayMessage("Starting new order...");
 
         while (orderInProgress) {
-            int choice = OrderScreen.getOrderMenuChoice();
+            int choice = getOrderMenuChoice();
 
             switch (choice) {
                 case 1:
-                    OrderManager.addSandwichToOrder();
+                    addSandwichToOrder();
                     break;
                 case 2:
-                    OrderManager.addDrinkToOrder();
+                    addDrinkToOrder();
                     break;
                 case 3:
                     addChipsToOrder();
@@ -57,354 +54,100 @@ public class OrderScreen {
         return getValidMenuChoice(0, 4, "Enter your choice: ");
     }
 
-    public static Sandwich buildSandwich() {
-        System.out.println("\n========== Add Sandwich ==========");
-
-        System.out.println("Select your bread:");
-        BreadType[] breads = BreadType.values();
-        for (int i = 0; i < breads.length; i++) {
-            System.out.println((i + 1) + ") " + breads[i].getDisplayName());
-        }
-        int breadChoice = getValidMenuChoice(1, breads.length, "Enter choice: ") - 1;
-
-        System.out.println("\nSandwich size:");
-        SandwichSize[] sizes = SandwichSize.values();
-        for (int i = 0; i < sizes.length; i++) {
-            System.out.println((i + 1) + ") " + sizes[i].getDisplayName() +
-                    " - Base Price: $" + String.format("%.2f", PriceCalculator.getSandwichBasePrice(sizes[i])));
-        }
-        int sizeChoice = getValidMenuChoice(1, sizes.length, "Enter choice: ") - 1;
-
-        Sandwich sandwich = new Sandwich(sizes[sizeChoice], breads[breadChoice]);
-
-        addMeatsToSandwich(sandwich);
-        addCheesesToSandwich(sandwich);
-        addRegularToppingsToSandwich(sandwich);
-        addSaucesToSandwich(sandwich);
-        addSidesToSandwich(sandwich);
-
-        sandwich.setToasted(getBooleanInput("\nWould you like the sandwich toasted? (y/n): "));
-
-        return sandwich;
-    }
-
-    private static void addMeatsToSandwich(Sandwich sandwich) {
-        System.out.println("\nSelect meats (enter 0 to finish):");
-        MeatType[] meats = MeatType.values();
-
-        while (true) {
-            // Use stream to display meat options with prices
-            Arrays.stream(meats)
-                    .forEach(meat -> {
-                        int index = Arrays.asList(meats).indexOf(meat) + 1;
-                        double regularPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), false);
-                        double extraPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), true);
-                        System.out.printf("%d) %s - Regular: $%.2f, Extra: $%.2f%n",
-                                index, meat.getDisplayName(), regularPrice, extraPrice);
-                    });
-            System.out.println("0) Done with meats");
-
-            int choice = getValidMenuChoice(0, meats.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
-
-            boolean isExtra = getBooleanInput("Extra meat? (y/n): ");
-
-            // Use stream to get selected meat safely
-            MeatType selectedMeat = Arrays.stream(meats)
-                    .skip(choice)
-                    .findFirst()
-                    .orElse(MeatType.TURKEY); // Safe fallback to first enum value
-
-            sandwich.addMeat(selectedMeat, isExtra);
-            double actualPrice = PriceCalculator.getMeatPrice(sandwich.getSize(), isExtra);
-            System.out.println("Added " + selectedMeat.getDisplayName() +
-                    (isExtra ? " (Extra)" : " (Regular)") + " - $" + String.format("%.2f", actualPrice));
+    // Add a sandwich to the current order
+    private static void addSandwichToOrder() {
+        try {
+            Sandwich sandwich = BuildSandwich.buildSandwich();
+            currentOrder.addSandwich(sandwich);
+            BuildSandwich.displayMessage("\nSandwich added to order!");
+            BuildSandwich.displayMessage("Sandwich price: $" + String.format("%.2f", sandwich.calculatePrice()));
+        } catch (Exception e) {
+            BuildSandwich.displayMessage("Error adding sandwich. Please try again.");
         }
     }
 
-    private static void addCheesesToSandwich(Sandwich sandwich) {
-        System.out.println("\nSelect cheeses (enter 0 to finish):");
-        CheeseType[] cheeses = CheeseType.values();
-
-        while (true) {
-            // Use stream to display cheese options with prices
-            Arrays.stream(cheeses)
-                    .forEach(cheese -> {
-                        int index = Arrays.asList(cheeses).indexOf(cheese) + 1;
-                        double regularPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), false);
-                        double extraPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), true);
-                        System.out.printf("%d) %s - Regular: $%.2f, Extra: $%.2f%n",
-                                index, cheese.getDisplayName(), regularPrice, extraPrice);
-                    });
-            System.out.println("0) Done with cheeses");
-
-            int choice = getValidMenuChoice(0, cheeses.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
-
-            boolean isExtra = getBooleanInput("Extra cheese? (y/n): ");
-
-            // Use stream to get selected cheese safely
-            CheeseType selectedCheese = Arrays.stream(cheeses)
-                    .skip(choice)
-                    .findFirst()
-                    .orElse(CheeseType.AMERICAN); // Safe fallback to first enum value
-
-            sandwich.addCheese(selectedCheese, isExtra);
-            double actualPrice = PriceCalculator.getCheesePrice(sandwich.getSize(), isExtra);
-            System.out.println("Added " + selectedCheese.getDisplayName() +
-                    (isExtra ? " (Extra)" : " (Regular)") + " - $" + String.format("%.2f", actualPrice));
+    // Add a drink to the current order
+    private static void addDrinkToOrder() {
+        try {
+            Drink drink = BuildSandwich.buildDrink();
+            currentOrder.addDrink(drink);
+            BuildSandwich.displayMessage("\nDrink added to order!");
+            BuildSandwich.displayMessage("Drink price: $" + String.format("%.2f", drink.calculatePrice()));
+        } catch (Exception e) {
+            BuildSandwich.displayMessage("Error adding drink. Please try again.");
         }
     }
 
-    private static void addRegularToppingsToSandwich(Sandwich sandwich) {
-        System.out.println("\nSelect other toppings (enter 0 to finish):");
-        RegularToppingType[] toppings = RegularToppingType.values();
-
-        while (true) {
-            // Use stream to display topping options
-            Arrays.stream(toppings)
-                    .forEach(topping -> {
-                        int index = Arrays.asList(toppings).indexOf(topping) + 1;
-                        System.out.println(index + ") " + topping.getDisplayName() + " (FREE)");
-                    });
-            System.out.println("0) Done with toppings");
-
-            int choice = getValidMenuChoice(0, toppings.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
-
-            // Use stream to get selected topping safely
-            RegularToppingType selectedTopping = Arrays.stream(toppings)
-                    .skip(choice)
-                    .findFirst()
-                    .orElse(RegularToppingType.LETTUCE); // Safe fallback to first enum value
-
-            sandwich.addRegularTopping(selectedTopping);
-            System.out.println("Added " + selectedTopping.getDisplayName() + " (FREE)");
+    // Add chips to the current order
+    private static void addChipsToOrder() {
+        try {
+            Chips chips = BuildSandwich.buildChips();
+            currentOrder.addChips(chips);
+            BuildSandwich.displayMessage("\nChips added to order!");
+            BuildSandwich.displayMessage("Chips price: $" + String.format("%.2f", chips.calculatePrice()));
+        } catch (Exception e) {
+            BuildSandwich.displayMessage("Error adding chips. Please try again.");
         }
     }
 
-    private static void addSaucesToSandwich(Sandwich sandwich) {
-        System.out.println("\nSelect sauces (enter 0 to finish):");
-        SauceType[] sauces = SauceType.values();
+    /**
+     * Process the checkout for the current order
+     * @return True if the order process should end, false if it should continue
+     */
+    private static boolean checkout() {
+        // Display the order summary
+        BuildSandwich.displayOrderSummary(currentOrder);
 
-        while (true) {
-            // Use stream to display sauce options
-            Arrays.stream(sauces)
-                    .forEach(sauce -> {
-                        int index = Arrays.asList(sauces).indexOf(sauce) + 1;
-                        System.out.println(index + ") " + sauce.getDisplayName() + " (FREE)");
-                    });
-            System.out.println("0) Done with sauces");
+        // Check if order is empty
+        if (currentOrder.isEmpty()) {
+            OrderScreen.displayMessage("Cannot checkout with an empty order.");
+            return false; // Continue with order
+        }
 
-            int choice = getValidMenuChoice(0, sauces.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
+        // Get checkout choice
+        int choice = OrderScreen.getCheckoutChoice();
 
-            // Use stream to get selected sauce safely
-            SauceType selectedSauce = Arrays.stream(sauces)
-                    .skip(choice)
-                    .findFirst()
-                    .orElse(SauceType.MAYO); // Safe fallback to first enum value
-
-            sandwich.addSauce(selectedSauce);
-            System.out.println("Added " + selectedSauce.getDisplayName() + " (FREE)");
+        switch (choice) {
+            case 1:
+                // Confirm order
+                confirmOrder();
+                return true; // End order process
+            case 0:
+                // Cancel order
+                OrderScreen.displayMessage("Order cancelled. Returning to main menu.");
+                return true; // End order process
+            default:
+                OrderScreen.displayMessage("Invalid choice. Please try again.");
+                return false; // Continue checkout process
         }
     }
 
-    private static void addSidesToSandwich(Sandwich sandwich) {
-        System.out.println("\nSelect sides (enter 0 to finish):");
-        SideType[] sides = SideType.values();
+    // Confirm the order and generate receipt */
+    private static void confirmOrder() {
+        try {
+            // Generate and save receipt
+            ReceiptGenerator.saveReceiptToFile(currentOrder);
 
-        while (true) {
-            // Use stream to display side options
-            Arrays.stream(sides)
-                    .forEach(side -> {
-                        int index = Arrays.asList(sides).indexOf(side) + 1;
-                        System.out.println(index + ") " + side.getDisplayName() + " (FREE)");
-                    });
-            System.out.println("0) Done with sides");
+            // Display confirmation
+            displayMessage("\n" + "=".repeat(40));
+            displayMessage("ORDER CONFIRMED!");
+            displayMessage("Total: $" + String.format("%.2f", currentOrder.calculateTotal()));
+            displayMessage("Receipt has been saved to receipts folder.");
+            displayMessage("Thank you for your order!");
+            displayMessage("=".repeat(40));
 
-            int choice = getValidMenuChoice(0, sides.length, "Enter choice: ") - 1;
-            if (choice == -1) break;
-
-            // Use stream to get selected side safely
-            SideType selectedSide = Arrays.stream(sides)
-                    .skip(choice)
-                    .findFirst()
-                    .orElse(SideType.COLESLAW); // Safe fallback to first enum value
-
-            sandwich.addSide(selectedSide);
-            System.out.println("Added " + selectedSide.getDisplayName() + " (FREE)");
+        } catch (Exception e) {
+            displayMessage("Error processing order: " + e.getMessage());
+            displayMessage("Order was not completed. Please try again.");
         }
     }
 
-    public static Drink buildDrink() {
-        System.out.println("\n========== Add Drink ==========");
-
-        System.out.println("Select drink size:");
-        DrinkSize[] sizes = DrinkSize.values();
-
-        // Use stream to display drink sizes with prices
-        Arrays.stream(sizes)
-                .forEach(size -> {
-                    int index = Arrays.asList(sizes).indexOf(size) + 1;
-                    System.out.println(index + ") " + size.getDisplayName() +
-                            " - $" + String.format("%.2f", PriceCalculator.getDrinkPrice(size)));
-                });
-
-        int sizeChoice = getValidMenuChoice(1, sizes.length, "Enter choice: ") - 1;
-
-        String[] drinkFlavors = {
-                "Cola", "Sprite", "Orange", "Water", "Coffee",
-                "Tea", "Lemonade", "Root Beer", "Other (Custom)"
-        };
-
-        System.out.println("\nSelect drink flavor:");
-
-        // Use stream to display flavor options
-        Arrays.stream(drinkFlavors)
-                .forEach(flavor -> {
-                    int index = Arrays.asList(drinkFlavors).indexOf(flavor) + 1;
-                    System.out.println(index + ") " + flavor);
-                });
-
-        int flavorChoice = getValidMenuChoice(1, drinkFlavors.length, "Enter choice: ") - 1;
-
-        // Use ternary operator with stream operations
-        String flavor = (flavorChoice == drinkFlavors.length - 1)
-                ? getStringInput("Enter custom drink flavor: ")
-                : Arrays.stream(drinkFlavors)
-                .skip(flavorChoice)
-                .findFirst()
-                .orElse("Cola");
-
-        DrinkSize selectedSize = Arrays.stream(sizes)
-                .skip(sizeChoice)
-                .findFirst()
-                .orElse(DrinkSize.SMALL);
-
-        System.out.println("Selected: " + selectedSize.getDisplayName() + " " + flavor);
-        System.out.println("Price: $" + String.format("%.2f", PriceCalculator.getDrinkPrice(selectedSize)));
-
-        return new Drink(selectedSize, flavor);
-    }
-
-    public static Chips buildChips() {
-        System.out.println("\n========== Add Chips ==========");
-
-        String[] chipVarieties = {
-                "Classic", "BBQ", "Sour Cream & Onion", "Salt & Vinegar",
-                "Cheddar", "Jalapeño", "Honey Mustard", "Other (Custom)"
-        };
-
-        System.out.println("Select chip variety:");
-
-        // Use stream to display an array of objects as menu options
-        Arrays.stream(chipVarieties)
-                .forEach(variety -> {
-                    int index = Arrays.asList(chipVarieties).indexOf(variety) + 1;
-                    System.out.println(index + ") " + variety);
-                });
-
-        int chipChoice = getValidMenuChoice(1, chipVarieties.length, "Enter choice: ") - 1;
-
-        // Use ternary operator and stream operations
-        String chipType = (chipChoice == chipVarieties.length - 1)
-                ? getStringInput("Enter custom chip type: ")
-                : Arrays.stream(chipVarieties)
-                .skip(chipChoice)
-                .findFirst()
-                .orElse("Classic");
-
-        System.out.println("Selected: " + chipType);
-        System.out.println("Price: $" + String.format("%.2f", PriceCalculator.getChipsPrice()));
-        return new Chips(chipType);
-    }
-
-    public static void displayOrderSummary(Order order) {
-        System.out.println("\n========== Order Summary ==========");
-
-        if (order.isEmpty()) {
-            System.out.println("Your order is empty.");
-            return;
-        }
-
-        // Display sandwiches using stream with index
-        order.getSandwiches().stream()
-                .forEach(sandwich -> {
-                    int index = order.getSandwiches().indexOf(sandwich) + 1;
-                    System.out.println("\nSandwich #" + index + ":");
-                    System.out.println("  Size: " + sandwich.getSize().getDisplayName());
-                    System.out.println("  Bread: " + sandwich.getBreadType().getDisplayName());
-
-                    // Display meats with stream
-                    if (!sandwich.getMeats().isEmpty()) {
-                        String meats = sandwich.getMeats().stream()
-                                .map(meat -> meat.getName() + (meat.isExtra() ? " (Extra)" : ""))
-                                .reduce((a, b) -> a + ", " + b)
-                                .orElse("");
-                        System.out.println("  Meats: " + meats);
-                    }
-
-                    // Display cheeses with stream
-                    if (!sandwich.getCheeses().isEmpty()) {
-                        String cheeses = sandwich.getCheeses().stream()
-                                .map(cheese -> cheese.getName() + (cheese.isExtra() ? " (Extra)" : ""))
-                                .reduce((a, b) -> a + ", " + b)
-                                .orElse("");
-                        System.out.println("  Cheeses: " + cheeses);
-                    }
-
-                    // Display regular toppings with stream
-                    if (!sandwich.getRegularToppings().isEmpty()) {
-                        String toppings = sandwich.getRegularToppings().stream()
-                                .map(RegularTopping::getName)
-                                .reduce((a, b) -> a + ", " + b)
-                                .orElse("");
-                        System.out.println("  Toppings: " + toppings);
-                    }
-
-                    // Display sauces with stream
-                    if (!sandwich.getSauces().isEmpty()) {
-                        String sauces = sandwich.getSauces().stream()
-                                .map(Sauce::getName)
-                                .reduce((a, b) -> a + ", " + b)
-                                .orElse("");
-                        System.out.println("  Sauces: " + sauces);
-                    }
-
-                    // Display sides with stream
-                    if (!sandwich.getSides().isEmpty()) {
-                        String sides = sandwich.getSides().stream()
-                                .map(Side::getName)
-                                .reduce((a, b) -> a + ", " + b)
-                                .orElse("");
-                        System.out.println("  Sides: " + sides);
-                    }
-
-                    if (sandwich.isToasted()) {
-                        System.out.println("  Toasted: Yes");
-                    }
-
-                    System.out.println("  Price: $" + String.format("%.2f", sandwich.calculatePrice()));
-                });
-
-        // Display drinks with stream
-        order.getDrinks().stream()
-                .forEach(drink -> {
-                    System.out.println("\nDrink: " + drink.getSize().getDisplayName() + " " + drink.getFlavor());
-                    System.out.println("  Price: $" + String.format("%.2f", drink.calculatePrice()));
-                });
-
-        // Display chips with stream
-        order.getChips().stream()
-                .forEach(chip -> {
-                    System.out.println("\nChips: " + chip.getChipType());
-                    System.out.println("  Price: $" + String.format("%.2f", chip.calculatePrice()));
-                });
-
-        System.out.println("\n" + "=".repeat(35));
-        System.out.println("Total: $" + String.format("%.2f", order.calculateTotal()));
-        System.out.println("=".repeat(35));
+    /**
+     * Get the current order (for testing purposes)
+     * @return The current order
+     */
+    public Order getCurrentOrder() {
+        return currentOrder;
     }
 
     public static int getCheckoutChoice() {
