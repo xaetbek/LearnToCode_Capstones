@@ -1,10 +1,8 @@
 package org.pluralsight.ui;
 
-import org.pluralsight.model.enums.*;
 import org.pluralsight.model.products.*;
-import org.pluralsight.model.toppings.*;
 import org.pluralsight.service.*;
-import java.util.Arrays;
+
 import java.util.Scanner;
 
 public class OrderScreen {
@@ -57,36 +55,36 @@ public class OrderScreen {
     // Add a sandwich to the current order
     private static void addSandwichToOrder() {
         try {
-            Sandwich sandwich = BuildSandwich.buildSandwich();
+            Sandwich sandwich = BuildOrder.buildSandwich();
             currentOrder.addSandwich(sandwich);
-            BuildSandwich.displayMessage("\nSandwich added to order!");
-            BuildSandwich.displayMessage("Sandwich price: $" + String.format("%.2f", sandwich.calculatePrice()));
+            BuildOrder.displayMessage("\nSandwich added to order!");
+            BuildOrder.displayMessage("Sandwich price: $" + String.format("%.2f", sandwich.calculatePrice()));
         } catch (Exception e) {
-            BuildSandwich.displayMessage("Error adding sandwich. Please try again.");
+            BuildOrder.displayMessage("Error adding sandwich. Please try again.");
         }
     }
 
     // Add a drink to the current order
     private static void addDrinkToOrder() {
         try {
-            Drink drink = BuildSandwich.buildDrink();
+            Drink drink = BuildOrder.buildDrink();
             currentOrder.addDrink(drink);
-            BuildSandwich.displayMessage("\nDrink added to order!");
-            BuildSandwich.displayMessage("Drink price: $" + String.format("%.2f", drink.calculatePrice()));
+            BuildOrder.displayMessage("\nDrink added to order!");
+            BuildOrder.displayMessage("Drink price: $" + String.format("%.2f", drink.calculatePrice()));
         } catch (Exception e) {
-            BuildSandwich.displayMessage("Error adding drink. Please try again.");
+            BuildOrder.displayMessage("Error adding drink. Please try again.");
         }
     }
 
     // Add chips to the current order
     private static void addChipsToOrder() {
         try {
-            Chips chips = BuildSandwich.buildChips();
+            Chips chips = BuildOrder.buildChips();
             currentOrder.addChips(chips);
-            BuildSandwich.displayMessage("\nChips added to order!");
-            BuildSandwich.displayMessage("Chips price: $" + String.format("%.2f", chips.calculatePrice()));
+            BuildOrder.displayMessage("\nChips added to order!");
+            BuildOrder.displayMessage("Chips price: $" + String.format("%.2f", chips.calculatePrice()));
         } catch (Exception e) {
-            BuildSandwich.displayMessage("Error adding chips. Please try again.");
+            BuildOrder.displayMessage("Error adding chips. Please try again.");
         }
     }
 
@@ -96,7 +94,7 @@ public class OrderScreen {
      */
     private static boolean checkout() {
         // Display the order summary
-        BuildSandwich.displayOrderSummary(currentOrder);
+        BuildOrder.displayOrderSummary(currentOrder);
 
         // Check if order is empty
         if (currentOrder.isEmpty()) {

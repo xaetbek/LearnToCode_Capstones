@@ -1,9 +1,9 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.model.interfaces.iPriceable;
+import org.pluralsight.model.interfaces.Priceable;
 
 // Abstract base class for all orderable menu items
-public abstract class AbstractMenuItem implements iPriceable {
+public abstract class AbstractMenuItem implements Priceable {
     protected String name;
     protected double basePrice;
 

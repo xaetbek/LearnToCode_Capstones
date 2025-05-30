@@ -1,6 +1,6 @@
 package org.pluralsight.model.products;
 
-import org.pluralsight.model.interfaces.iPriceable;
+import org.pluralsight.model.interfaces.Priceable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,8 +34,8 @@ public class Order {
     }
 
     // Helper method to get all products as iPriceable
-    public List<iPriceable> getAllProducts() {
-        List<iPriceable> allProducts = new ArrayList<>();
+    public List<Priceable> getAllProducts() {
+        List<Priceable> allProducts = new ArrayList<>();
         allProducts.addAll(sandwiches);  // Sandwich implements iPriceable
         allProducts.addAll(drinks);      // Drink implements iPriceable
         allProducts.addAll(chips);       // Chips implements iPriceable
@@ -45,7 +45,7 @@ public class Order {
     // MAIN METHOD: Calculate total using streams and iPriceable interface
     public double calculateTotal() {
         return getAllProducts().stream()
-                .mapToDouble(iPriceable::calculatePrice)  // Method reference to interface method
+                .mapToDouble(Priceable::calculatePrice)  // Method reference to interface method
                 .sum();
     }
 

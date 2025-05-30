@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import static org.pluralsight.ui.HomeScreen.scanner;
 
-public class BuildSandwich {
+public class BuildOrder {
     public static Sandwich buildSandwich() {
         System.out.println("\n========== Add Sandwich ==========");
 

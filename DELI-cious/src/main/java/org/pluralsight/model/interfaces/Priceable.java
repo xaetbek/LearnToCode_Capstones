@@ -1,7 +1,7 @@
 package org.pluralsight.model.interfaces;
 
 // Interface for items that can be priced
-public interface iPriceable {
+public interface Priceable {
     // Method that all priceable items must implement
     double calculatePrice();
 

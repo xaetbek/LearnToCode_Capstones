@@ -1,4 +1,19 @@
 classDiagram
+    class Priceable {
+        <<interface>>
+        +calculatePrice() double
+        +getDisplayName() String
+        +getFormattedPrice() String
+    }
+    class AbstractMenuItem {
+        <<abstract>>
+        #String name
+        #double price
+        +calculatePrice() double
+        +getDisplayName() String
+        +getFormattedPrice() String
+    }
+
     class Order {
         -Date orderDate
         -Time orderTime
@@ -23,7 +38,6 @@ classDiagram
         -List~Sauce~ sauces
         -List~Side~ sides
         -boolean isToasted
-        +calculatePrice() double
         +addMeat(Meat, boolean isExtra)
         +addCheese(Cheese, boolean isExtra)
         +addRegularTopping(RegularTopping)
@@ -35,12 +49,10 @@ classDiagram
     class Drink {
         -DrinkSize size
         -String flavor
-        +calculatePrice() double
     }
 
     class Chips {
         -String chipType
-        +calculatePrice() double
     }
 
     class Topping {
@@ -163,26 +175,6 @@ classDiagram
         +getChipsPrice() double
     }
 
-    class UserInterface {
-        +displayHomeScreen()
-        +displayOrderScreen()
-        +displaySandwichBuilder()
-        +displayDrinkSelector()
-        +displayChipsSelector()
-        +displayCheckout()
-        +getUserInput() String
-    }
-
-    class OrderManager {
-        -Order currentOrder
-        +createNewOrder()
-        +addSandwichToOrder()
-        +addDrinkToOrder()
-        +addChipsToOrder()
-        +checkout()
-        +cancelOrder()
-    }
-
     class ReceiptGenerator {
         +generateReceipt(Order) String
         +saveReceiptToFile(Order, String)
@@ -190,28 +182,43 @@ classDiagram
     }
 
     %% Relationships
-    Order "1" *-- "0..*" Sandwich : contains
-    Order "1" *-- "0..*" Drink : contains
-    Order "1" *-- "0..*" Chips : contains
+    Main --> HomeScreen
+    HomeScreen --> OrderScreen
+    OrderScreen --> BuildOrder
+    OrderScreen --> Order
+    OrderScreen --> ReceiptGenerator
+    Priceable <|.. AbstractMenuItem
+    AbstractMenuItem <|-- Sandwich
+    AbstractMenuItem <|-- Drink
+    AbstractMenuItem <|-- Chips
+    Topping <|-- Meat
+    Topping <|-- Cheese
+    Topping <|-- RegularTopping
+    Topping <|-- Sauce
+    Topping <|-- Side
+    Meat --> MeatType
+    Cheese --> CheeseType
+    RegularTopping --> RegularToppingType
+    Sauce --> SauceType
+    Side --> SideType
+    Topping --> ToppingType
+    Order *-- Sandwich
+    Order *-- Drink
+    Order *-- Chips
+    Sandwich --> SandwichSize
+    Sandwich --> BreadType
+    Sandwich *-- "0..*" Meat
+    Sandwich *-- "0..*" Cheese
+    Sandwich *-- "0..*" RegularTopping
+    Sandwich *-- "0..*" Sauce
+    Sandwich *-- "0..*" Side
+    Drink --> DrinkSize
+    BuildOrder ..> Order
+    BuildOrder ..> Sandwich
+    BuildOrder ..> Drink
+    BuildOrder ..> Chips
+    PriceCalculator ..> Sandwich
+    PriceCalculator ..> Drink
+    PriceCalculator ..> Chips
+    ReceiptGenerator ..> Order
     
-    Sandwich "1" *-- "0..*" Meat : contains
-    Sandwich "1" *-- "0..*" Cheese : contains
-    Sandwich "1" *-- "0..*" RegularTopping : contains
-    Sandwich "1" *-- "0..*" Sauce : contains
-    Sandwich "1" *-- "0..*" Side : contains
-    
-    Topping <|-- Meat : extends
-    Topping <|-- Cheese : extends
-    Topping <|-- RegularTopping : extends
-    Topping <|-- Sauce : extends
-    Topping <|-- Side : extends
-    
-    OrderManager --> Order : manages
-    OrderManager --> UserInterface : uses
-    OrderManager --> ReceiptGenerator : uses
-    
-    Sandwich --> PriceCalculator : uses
-    Drink --> PriceCalculator : uses
-    Chips --> PriceCalculator : uses
-    
-    ReceiptGenerator --> Order : processes
