@@ -47,7 +47,7 @@ public class ReceiptGenerator {
 
         // Header
         receipt.append("DELI-cious Receipt\n");
-        receipt.append("====================\n");
+        receipt.append("~~~~~~~~~~~~~~~~~~~~\n");
         receipt.append("Date: ").append(order.getOrderDateTime().format(formatter)).append("\n\n");
 
         // Sandwiches
@@ -142,9 +142,9 @@ public class ReceiptGenerator {
         }
 
         // Total
-        receipt.append("==================\n");
+        receipt.append("~~~~~~~~~~~~~~~~~~\n");
         receipt.append("TOTAL: $").append(String.format("%.2f", order.calculateTotal())).append("\n");
-        receipt.append("==================\n");
+        receipt.append("~~~~~~~~~~~~~~~~~~\n");
         receipt.append("Thank you for your business!\n");
 
         return receipt.toString();

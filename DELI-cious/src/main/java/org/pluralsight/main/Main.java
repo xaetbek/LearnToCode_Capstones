@@ -15,15 +15,9 @@ public class Main {
      * Main method - entry point of the application
      */
     public static void main(String[] args) {
-        try {
             // Initialize and start the Order Management System
             HomeScreen homeScreen = new HomeScreen();
             homeScreen.start();
 
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred while starting the application:");
-            System.err.println(e.getMessage());
-            System.err.println("Please restart the application.");
-        }
     }
 }

@@ -43,7 +43,7 @@ public class OrderScreen {
     }
 
     public static int getOrderMenuChoice() {
-        System.out.println("\n========== Order Menu ==========");
+        System.out.println("\n~~~~~~~~~~ Order Menu ~~~~~~~~~~");
         System.out.println("1) Add Sandwich");
         System.out.println("2) Add Drink");
         System.out.println("3) Add Chips");
@@ -127,12 +127,12 @@ public class OrderScreen {
             ReceiptGenerator.saveReceiptToFile(currentOrder);
 
             // Display confirmation
-            displayMessage("\n" + "=".repeat(40));
+            displayMessage("\n" + "~".repeat(40));
             displayMessage("ORDER CONFIRMED!");
             displayMessage("Total: $" + String.format("%.2f", currentOrder.calculateTotal()));
             displayMessage("Receipt has been saved to receipts folder.");
             displayMessage("Thank you for your order!");
-            displayMessage("=".repeat(40));
+            displayMessage("~".repeat(40));
 
         } catch (Exception e) {
             displayMessage("Error processing order: " + e.getMessage());

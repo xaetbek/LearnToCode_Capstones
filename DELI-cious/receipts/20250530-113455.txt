@@ -1,0 +1,26 @@
+DELI-cious Receipt
+~~~~~~~~~~~~~~~~~~~~
+Date: 2025-05-30 11:34:55
+
+Sandwich #1:
+- Size: 4"
+- Bread: White
+- Meats: Steak (Extra)
+- Cheeses: American
+- Toppings: Lettuce, Peppers
+- Sauces: Mayo
+- Sides: Coleslaw
+- Toasted: Yes
+- Price: $7.75
+
+Drink #1: Small Cola
+- Price: $2.00
+
+Chips #1: Classic
+- Price: $1.50
+
+~~~~~~~~~~~~~~~~~~
+TOTAL: $11.25
+~~~~~~~~~~~~~~~~~~
+Thank you for your business!
+

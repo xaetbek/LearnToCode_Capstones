@@ -49,16 +49,16 @@ public class HomeScreen {
     // Display welcome message
     public static void displayWelcome() {
         System.out.println();
-        System.out.println("\n" + "=".repeat(40));
-        System.out.println("         Welcome to DELI-cious!");
-        System.out.println("       Your Custom Sandwich Shop");
-        System.out.println("=".repeat(40));
+        System.out.println("\n" + "~".repeat(40));
+        System.out.println("~         Welcome to DELI-cious!       ~");
+        System.out.println("~       Your Custom Sandwich Shop      ~");
+        System.out.println("~".repeat(40));
 
     }
 
     // Display the main menu and get user choice with validation
     public static int getMainMenuChoice() {
-        System.out.println("===== HOME =====");
+        System.out.println("~~~~~ HOME ~~~~~");
         System.out.println("1. View Menu");
         System.out.println("2. New Order");
         System.out.println("3. Order History");
@@ -66,10 +66,9 @@ public class HomeScreen {
         return getValidMenuChoice(0, 3, "Choose an option: ");
     }
 
-
     // Display all available menu items with prices
     public static void displayMenuItems() {
-        System.out.println("\n========== DELI-cious Menu ==========");
+        System.out.println("\n~~~~~~~~~~ DELI-cious Menu ~~~~~~~~~~");
 
         // Display Sandwich Base Prices
         System.out.println("\n🥪 SANDWICHES (Base Prices)");
@@ -155,16 +154,16 @@ public class HomeScreen {
         System.out.printf("  • All varieties - $%.2f%n", PriceCalculator.getChipsPrice());
         System.out.println("  Available types: Classic, BBQ, Sour Cream & Onion, Salt & Vinegar, etc.");
 
-        System.out.println("\n" + "=".repeat(45));
+        System.out.println("\n" + "~".repeat(45));
         System.out.println("All sandwiches can be toasted upon request!");
-        System.out.println("=".repeat(45) + "\n");
+        System.out.println("~".repeat(45) + "\n");
     }
 
     /**
      * Display order history from saved receipts
      */
     public static void displayOrderHistory() {
-        System.out.println("\n========== Order History ==========");
+        System.out.println("\n~~~~~~~~~~ Order History ~~~~~~~~~~");
 
         File receiptsDir = new File("receipts");
         if (!receiptsDir.exists() || !receiptsDir.isDirectory()) {
@@ -219,8 +218,8 @@ public class HomeScreen {
         }
 
         System.out.println("\nWould you like to view a specific receipt? (y/n): ");
-        boolean choice = getBooleanInput("");
-        if (choice) {
+        boolean userChoice = getBooleanInput("");
+        if (userChoice) {
             viewSpecificReceipt(receiptFiles);
         }
     }
@@ -247,9 +246,9 @@ public class HomeScreen {
         int choice = getValidMenuChoice(1, maxReceipts, "Enter receipt number (1-" + maxReceipts + "): ");
 
         File selectedFile = receiptFiles[choice - 1];
-        System.out.println("\n" + "=".repeat(20));
+        System.out.println("\n" + "~".repeat(20));
         System.out.println("  FULL RECEIPT");
-        System.out.println("=".repeat(20));
+        System.out.println("~".repeat(20));
 
         try {
             Path path = Paths.get(selectedFile.getPath());
@@ -258,7 +257,7 @@ public class HomeScreen {
             System.out.println("Error reading receipt file: " + e.getMessage());
         }
 
-        System.out.println("=".repeat(50));
+        System.out.println("~".repeat(50));
     }
 
     // Get valid menu choice with range validation
