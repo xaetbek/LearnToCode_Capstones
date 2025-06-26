@@ -145,7 +145,7 @@ DELETE /products/{id}               # Delete product (Admin)
 GET    /cart                       # Get user's cart
 POST   /cart/products/{productId}  # Add product to cart
 PUT    /cart/products/{productId}  # Update quantity in cart
-DELETE /cart                      # Clear cart
+DELETE /cart                       # Clear cart
 ```
 
 ### User Profile (Authenticated users only)
@@ -164,7 +164,7 @@ POST /orders      # Create order from cart (checkout)
 The API uses JWT (JSON Web Tokens) for authentication. After successful login, include the token in the Authorization header:
 
 ```
-Authorization: Bearer <eyJhbGciOiJIUzI1NiJ9...>
+Authorization: Bearer <jwt-token>
 ```
 
 ### Sample Login Response
@@ -211,7 +211,7 @@ src/
 ├── main/
 │   ├── java/
 │   │   └── org/yearup/
-│   │       ├── controllers/     # REST controllers
+│   │       ├── controllers/    # REST controllers
 │   │       ├── data/           # Data access layer
 │   │       ├── models/         # Entity models
 │   │       └── security/       # Authentication & authorization
@@ -262,8 +262,6 @@ src/
 ![Database Structure](screenshots/database-schema.png)
 
 ## 💡 Interesting Code Highlight
-
-One of the most interesting aspects of this project is the shopping cart implementation that maintains state across user sessions. Here's a key piece of code from the PROJECT:
 
   [LOADING...]
 
