@@ -23,11 +23,14 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     {
         List<Product> products = new ArrayList<>();
 
+        // ✅ FIXED: Corrected the SQL logic
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
-                "   AND (price <= ? OR ? = -1) " +
+                "   AND (price >= ? OR ? = -1) " +        // ✅ FIXED: price >= minPrice
+                "   AND (price <= ? OR ? = -1) " +        // ✅ ADDED: price <= maxPrice
                 "   AND (color = ? OR ? = '') ";
 
+        // Handle null values
         categoryId = categoryId == null ? -1 : categoryId;
         minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
         maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
@@ -38,10 +41,12 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, categoryId);
             statement.setInt(2, categoryId);
-            statement.setBigDecimal(3, minPrice);
-            statement.setBigDecimal(4, minPrice);
-            statement.setString(5, color);
-            statement.setString(6, color);
+            statement.setBigDecimal(3, minPrice);        // ✅ FIXED: minPrice for >= check
+            statement.setBigDecimal(4, minPrice);        // ✅ FIXED: minPrice for null check
+            statement.setBigDecimal(5, maxPrice);        // ✅ FIXED: maxPrice for <= check
+            statement.setBigDecimal(6, maxPrice);        // ✅ FIXED: maxPrice for null check
+            statement.setString(7, color);               // ✅ FIXED: Updated parameter positions
+            statement.setString(8, color);               // ✅ FIXED: Updated parameter positions
 
             ResultSet row = statement.executeQuery();
 
