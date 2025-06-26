@@ -4,18 +4,18 @@ A comprehensive Spring Boot REST API for an e-commerce platform that provides ba
 
 ## 📋 Table of Contents
 
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Getting Started](#getting-started)
-- [Database Setup](#database-setup)
-- [API Endpoints](#api-endpoints)
-- [Authentication](#authentication)
-- [Testing](#testing)
-- [Project Structure](#project-structure)
-- [Development Phases](#development-phases)
-- [Screenshots](#screenshots)
-- [Interesting Code Highlight](#interesting-code-highlight)
+- [Project Overview](#-project-overview)
+- [Features](#-features)
+- [Technology Stack](#-technology-stack)
+- [Getting Started](#-getting-started)
+- [Database Setup](#-database-setup)
+- [API Endpoints](#-api-endpoints)
+- [Authentication](#-authentication)
+- [Testing](#-testing)
+- [Project Structure](#-project-structure)
+- [Development Phases](#-development-phases)
+- [Screenshots](#-screenshots--loading)
+- [Interesting Code Highlight](#-interesting-code-highlight)
 
 ## 🎯 Project Overview
 
