@@ -60,6 +60,11 @@ public class AuthenticationController {
             httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
             return new ResponseEntity<>(new LoginResponseDto(jwt, user), httpHeaders, HttpStatus.OK);
         }
+        catch(ResponseStatusException ex)
+        {
+            // ✅ FIXED: Re-throw ResponseStatusException as-is
+            throw ex;
+        }
         catch(Exception ex)
         {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
@@ -80,6 +85,7 @@ public class AuthenticationController {
 
             // create user
             User user = userDao.create(new User(0, newUser.getUsername(), newUser.getPassword(), newUser.getRole()));
+
             // ✅ FIXED: Check if user creation failed
             if (user == null) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user.");
@@ -97,11 +103,17 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
+        catch (ResponseStatusException e)
+        {
+            // ✅ FIXED: Re-throw ResponseStatusException as-is to preserve the correct status code
+            throw e;
+        }
         catch (Exception e)
         {
+            // ✅ IMPROVED: Add more debugging info (remove in production)
+            System.err.println("Registration error: " + e.getMessage());
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
-
 }
-
