@@ -253,13 +253,13 @@ src/
 ## 📸 Screenshots  -  [LOADING...]
 
 ### API Testing in Postman
-![Postman Testing](screenshots/postman-testing.png)
+![Postman Testing](screenshots/Postman_test_results.png)
 
 ### Frontend Integration
-![EasyShop Website](screenshots/easyshop-frontend.png)
+![EasyShop Website](screenshots/Website-Front-End.png)
 
 ### Database Schema
-![Database Structure](screenshots/database-schema.png)
+![Database Structure](screenshots/DB-Schema.png)
 
 ## 💡 Interesting Code Highlight
 
