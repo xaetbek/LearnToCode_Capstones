@@ -80,11 +80,20 @@ public class AuthenticationController {
 
             // create user
             User user = userDao.create(new User(0, newUser.getUsername(), newUser.getPassword(), newUser.getRole()));
+            // ✅ FIXED: Check if user creation failed
+            if (user == null) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user.");
+            }
 
             // create profile
             Profile profile = new Profile();
             profile.setUserId(user.getId());
-            profileDao.create(profile);
+            Profile createdProfile = profileDao.create(profile);
+
+            // ✅ FIXED: Check if profile creation failed
+            if (createdProfile == null) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create user profile.");
+            }
 
             return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
