@@ -9,7 +9,6 @@ A comprehensive Spring Boot REST API for an e-commerce platform that provides ba
 - [Technology Stack](#-technology-stack)
 - [Getting Started](#-getting-started)
 - [Database Setup](#-database-setup)
-- [API Endpoints](#-api-endpoints)
 - [Authentication](#-authentication)
 - [Testing](#-testing)
 - [Project Structure](#-project-structure)
@@ -108,56 +107,6 @@ The database script creates the following tables:
 - **Regular User:** username: `user`, password: `password`
 - **Test User:** username: `george`, password: `password`
 
-## 🔗 API Endpoints
-
-### Authentication
-```
-POST /register     # User registration
-POST /login        # User authentication
-```
-
-### Categories (Admin only for CUD operations)
-```
-GET    /categories           # Get all categories
-GET    /categories/{id}      # Get category by ID
-POST   /categories           # Create new category (Admin)
-PUT    /categories/{id}      # Update category (Admin)
-DELETE /categories/{id}      # Delete category (Admin)
-```
-
-### Products (Admin only for CUD operations)
-```
-GET    /products                    # Get all products (with filtering)
-GET    /products/{id}               # Get product by ID
-POST   /products                    # Create new product (Admin)
-PUT    /products/{id}               # Update product (Admin)
-DELETE /products/{id}               # Delete product (Admin)
-```
-
-#### Product Filtering Parameters
-- `cat` - Filter by category ID
-- `minPrice` - Minimum price filter
-- `maxPrice` - Maximum price filter
-- `color` - Filter by product color
-
-### Shopping Cart (Authenticated users only)
-```
-GET    /cart                       # Get user's cart
-POST   /cart/products/{productId}  # Add product to cart
-PUT    /cart/products/{productId}  # Update quantity in cart
-DELETE /cart                       # Clear cart
-```
-
-### User Profile (Authenticated users only)
-```
-GET /profile      # Get user profile
-PUT /profile      # Update user profile
-```
-
-### Orders (Authenticated users only)
-```
-POST /orders      # Create order from cart (checkout)
-```
 
 ## 🔐 Authentication
 
@@ -196,14 +145,6 @@ Two Postman collections are provided:
 3. Set up collection variables (userToken, adminToken, etc.)
 4. Run the complete test suite to validate all endpoints
 
-### Unit Testing
-The project includes comprehensive unit tests for:
-- Authentication services
-- Product search and filtering logic
-- Shopping cart operations
-- Category management
-- Bug fixes and edge cases
-
 ## 📁 Project Structure
 
 ```
@@ -225,30 +166,34 @@ src/
 
 ## 🔄 Development Phases
 
-### Phase 1: Categories Controller ✅
+### Phase 1: Categories Controller - ✅
 - Implemented complete CRUD operations for categories
 - Added admin-only restrictions for modifications
 - Created MySQL DAO implementation
 
-### Phase 2: Bug Fixes ✅
+### Phase 2: Bug Fixes - ✅
 - **Bug 1:** Fixed product search/filtering logic
 - **Bug 2:** Resolved product update issues causing duplicates
 - Added comprehensive unit tests
 
 ### Phase 3: Shopping Cart 🛒  -  [LOADING...]
-- Implemented persistent shopping cart functionality
-- Added cart item management (add, update, remove)
-- Created cart-to-order conversion system
+- To be implemented persistent shopping cart functionality
+- To be added cart item management (add, update, remove)
+- To be created cart-to-order conversion system
 
-### Phase 4: User Profiles 👤  -  [INCOMPLETE]
-- To build user profile management system
-- To implement profile viewing and updating
-- To integrate with user registration process
-
-### Phase 5: Checkout System 🛍  -  [INCOMPLETE]
-- To create complete order processing system
-- To implement cart-to-order conversion
-- To add order line item management
+### Phase 4: User Profiles 👤 - ✅
+- Added profile service with JWT authentication for GET/PUT profile endpoints
+- Created beautified profile template with card-based responsive layout
+- Implemented personal and address information sections with FontAwesome icons
+- Added form validation and user-friendly input types (tel, email)
+- Included hover effects, smooth transitions, and mobile-responsive design
+- Integrated profile navigation in header with existing authentication system
+- Added success/error messaging for profile update operations
+  
+### Phase 5: Checkout System 🛍  -  [LOADING...]
+- To be created complete order processing system
+- To be implemented cart-to-order conversion
+- To be added order line item management
 
 ## 📸 Screenshots  -  [LOADING...]
 
@@ -261,30 +206,80 @@ src/
 ### Database Schema
 ![Database Structure](screenshots/DB-Schema.png)
 
+### User Profile UI
+![User Profile UI](screenshots/Profile-page.png)
+
 ## 💡 Interesting Code Highlight
+```java
+@GetMapping("")
+@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+public Profile getProfile(Principal principal)
+{
+    try
+    {
+        // Get the currently logged-in user
+        String userName = principal.getName();
+        User user = userDao.getByUserName(userName);
+        
+        if (user == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
 
-  [LOADING...]
+        // Get the user's profile
+        Profile profile = profileDao.getByUserId(user.getId());
+        
+        if (profile == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found");
 
-## 🤝 Contributing
+        return profile;
+    }
+    catch (ResponseStatusException ex)
+    {
+        throw ex;
+    }
+    catch (Exception ex)
+    {
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+    }
+}
+```
+**Why This Code is Interesting:**
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+🔐 **Multi-Layer Security Architecture**  
+Demonstrates 3 security levels:
+- `@PreAuthorize` - role-based access control
+- `Principal` - extracts authenticated user from JWT
+- Data ownership - users only see their own profiles
 
-## 📄 License
+🎯 **Elegant Problem Solving**  
+Solves: "How do users access only their data without exposing user IDs?"
+- Traditional (vulnerable): `@GetMapping("/{userId}")`
+- Our approach (secure): `getProfile(Principal principal)`
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+🔄 **JWT-to-Database Bridge**  
+```java
+String userName = principal.getName();  // Extract from JWT
+User user = userDao.getByUserName(userName);  // Database lookup
+Profile profile = profileDao.getByUserId(user.getId());  // Get user's data
+```
+Creates secure chain: JWT → Username → User ID → Profile Data
+
+🛡️ **Defense in Depth**  
+Multiple security layers protect data: Spring Security filters + `@PreAuthorize` + `Principal` + database ownership
+
+This demonstrates production-ready, enterprise-level security with clean Spring Boot architecture!
+
 
 ## 👥 Authors
 
 - **Khayotbek Azimov** - *Full Stack Software Engineer*
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- Remsey Maijlard - Pluralsight Instructor
+- Remsey Mailjard - Pluralsight Instructor
 - Pluralsight LearnToCode Java Development Bootcamp
 - Spring Boot Documentation
-- MySQL Community
 - JWT.io for token debugging tools
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
