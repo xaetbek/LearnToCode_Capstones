@@ -195,7 +195,7 @@ src/
 - To be implemented cart-to-order conversion
 - To be added order line item management
 
-## 📸 Screenshots  -  [LOADING...]
+## 📸 Screenshots
 
 ### API Testing in Postman
 ![Postman Testing](screenshots/Postman_test_results.png)
