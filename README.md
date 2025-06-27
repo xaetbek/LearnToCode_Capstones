@@ -55,7 +55,7 @@ Each project is organized in its own directory within the repository. Instructio
 To clone the repo:
 
 ```bash
-git clone [https://github.com/xaetbek/LearnToCode_capstones.git](https://github.com/xaetbek/LearnToCode_Capstones.git)
+git clone https://github.com/xaetbek/LearnToCode_Capstones.git
 ```
 
 ---
@@ -70,9 +70,9 @@ These projects were developed as part of my journey through the **Learn To Code 
 
 Feel free to reach out or connect:
 
-**Name:** Khayotbek Azimov
-**Email:** \[[xaetbek@gmail.com](mailto:xaetbek@gmail.com)]
-**LinkedIn:** \[[linkedin.com/in/your-profile](https://www.linkedin.com/in/hayat-azimov/)]
+* Name: Khayotbek Azimov
+* Email: xaetbek@gmail.com
+* LinkedIn: linkedin.com/in/hayat-azimov
 ---
 
 ## 🏁 License
