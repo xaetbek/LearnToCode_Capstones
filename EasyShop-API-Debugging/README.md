@@ -240,15 +240,15 @@ src/
 - Added cart item management (add, update, remove)
 - Created cart-to-order conversion system
 
-### Phase 4: User Profiles 👤  -  [LOADING...]
-- Built user profile management system
-- Implemented profile viewing and updating
-- Integrated with user registration process
+### Phase 4: User Profiles 👤  -  [INCOMPLETE]
+- To build user profile management system
+- To implement profile viewing and updating
+- To integrate with user registration process
 
-### Phase 5: Checkout System 🛍  -  [LOADING...]
-- Created complete order processing system
-- Implemented cart-to-order conversion
-- Added order line item management
+### Phase 5: Checkout System 🛍  -  [INCOMPLETE]
+- To create complete order processing system
+- To implement cart-to-order conversion
+- To add order line item management
 
 ## 📸 Screenshots  -  [LOADING...]
 
